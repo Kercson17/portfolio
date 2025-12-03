@@ -3,7 +3,6 @@
 A retro-themed personal portfolio website inspired by BMO from *Adventure Time*. Built with [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), and a lot of nostalgia.
 
 ![BMO Portfolio Preview](public/me.png) 
-*(Replace with a screenshot of your actual BMO interface if possible)*
 
 ## 🌟 Features
 
