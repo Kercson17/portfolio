@@ -1,0 +1,622 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* BMO Palette */
+  --bmo-teal: #63c7b2;
+  --bmo-teal-dark: #4daea0;
+  --bmo-screen-bg: #dcf2e6; /* Light Mint */
+  --bmo-dpad: #fcd93e;
+  --btn-tri: #00d2ff; /* Light Blue Triangle */
+  --btn-red: #ff4f4f;
+  --btn-green: #59cf59;
+  --text-color: #2f4f4f;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #fceabb; /* Soft yellow bg */
+  font-family: var(--font-vt323);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* --- BMO BODY --- */
+.bmo-body {
+  background-color: var(--bmo-teal);
+  width: 320px;
+  height: 540px;
+  border-radius: 20px;
+  position: relative;
+  padding: 30px 25px;
+  box-shadow:
+      inset 10px 0 20px rgba(255,255,255,0.2),
+      inset -10px 0 20px rgba(0,0,0,0.1),
+      15px 15px 0 rgba(0,0,0,0.15); /* Retro shadow */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- SCREEN AREA --- */
+.screen-container {
+  width: 100%;
+  height: 240px;
+  background-color: var(--bmo-screen-bg);
+  border-radius: 15px;
+  border: 6px solid var(--bmo-teal-dark);
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 5px 5px 10px rgba(0,0,0,0.1);
+}
+
+/* Scanline effect */
+.screen-container::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* BMO Face (Displayed when on Home) */
+.bmo-face {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  pointer-events: none; /* Let clicks pass through */
+  transition: opacity 0.3s;
+}
+
+.eyes {
+  display: flex;
+  gap: 80px;
+  margin-bottom: 20px;
+}
+
+.eye {
+  width: 15px; height: 15px;
+  background: #2f4f4f;
+  border-radius: 50%;
+  animation: blink 4s infinite;
+}
+
+.mouth {
+  width: 40px; height: 20px;
+  border-bottom: 4px solid #2f4f4f;
+  border-radius: 0 0 20px 20px;
+}
+
+/* Content Scroll Area */
+.content-scroll {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 15px 15px 30px 15px;
+  color: var(--text-color);
+  position: relative;
+  z-index: 2;
+}
+
+.content-scroll::-webkit-scrollbar { width: 5px; }
+.content-scroll::-webkit-scrollbar-thumb { background: var(--bmo-teal-dark); border-radius: 5px; }
+
+/* MUSIC PLAYER STYLES */
+.tape-visual {
+  background: #333;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px auto;
+  width: 180px;
+  height: 100px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 4px solid #555;
+}
+
+.tape-reel {
+  width: 30px; height: 30px;
+  background: #fff;
+  border-radius: 50%;
+  border: 4px solid #aaa;
+  position: relative;
+}
+
+.tape-reel::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px; height: 8px;
+  background: #333; /* Spindle */
+  border-radius: 50%; /* Make spindle round */
+}
+
+/* Teeth of the reel */
+.tape-reel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 2px dashed #888;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+  animation-play-state: paused;
+}
+
+.tape-visual.playing .tape-reel::before {
+  animation-play-state: running;
+}
+
+.tape-window {
+  background: #fff;
+  flex: 1;
+  height: 40px;
+  margin: 0 5px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  overflow: hidden;
+  border: 2px solid #555;
+}
+
+.player-controls-ui {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 1.5rem;
+  margin-top: 10px;
+  color: var(--bmo-teal-dark);
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+.page-section {
+  animation: fadeIn 0.3s;
+}
+
+h2 { border-bottom: 2px dashed var(--bmo-teal-dark); margin-bottom: 10px; font-size: 1.4rem; }
+p { font-size: 1.1rem; line-height: 1.2; margin-bottom: 10px; }
+ul { list-style: none; }
+li { margin-bottom: 5px; font-size: 1rem; }
+li::before { content: '♥ '; color: var(--btn-red); }
+
+/* --- BODY DETAILS --- */
+.floppy-slot {
+  width: 160px;
+  height: 12px;
+  background: #3e8e7e;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-radius: 6px;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.2);
+}
+
+/* --- CONTROLS --- */
+.controls-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  align-items: center;
+}
+
+/* D-PAD (Yellow Plus) */
+.d-pad {
+  position: relative;
+  width: 90px; height: 90px;
+}
+
+.d-pad div {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Visual parts of D-Pad */
+.d-pad-visual {
+  background-color: var(--bmo-dpad);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  pointer-events: none; /* Let clicks pass to click zones if layered */
+}
+
+.d-v { width: 28px; height: 80px; left: 31px; top: 5px; }
+.d-h { width: 80px; height: 28px; top: 31px; left: 5px; }
+.d-c { width: 28px; height: 28px; top: 31px; left: 31px; background: var(--bmo-dpad); z-index: 2; }
+
+/* SHAPE BUTTONS */
+.shape-buttons {
+  position: relative;
+  width: 100px; height: 100px;
+}
+
+.btn {
+  position: absolute;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: bold;
+}
+.btn:active { transform: translate(1px, 1px); box-shadow: none; }
+
+/* Triangle Button (Top) */
+.btn-tri {
+  top: 0; right: 35px;
+  width: 0; height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 35px solid var(--btn-tri);
+  background: transparent;
+  box-shadow: none; /* CSS triangles interact weird with box-shadow */
+  filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.2));
+}
+
+/* Green Circle (Left) */
+.btn-green {
+  bottom: 20px; left: 0;
+  width: 35px; height: 35px;
+  background: var(--btn-green);
+  border-radius: 50%;
+}
+
+/* Red Circle (Right) */
+.btn-red {
+  bottom: 30px; right: 0;
+  width: 35px; height: 35px;
+  background: var(--btn-red);
+  border-radius: 50%;
+}
+
+/* --- PORTS (Bottom) --- */
+.ports {
+  display: flex;
+  gap: 20px;
+  margin-top: 40px;
+}
+.port {
+  width: 40px; height: 12px;
+  background: #2f4f4f;
+  border-radius: 6px;
+}
+
+/* --- SIDE TEXT --- */
+.side-label {
+  position: absolute;
+  right: 40px; /* Changed for better visibility on standard screens, or keep negative if intentional off-screen effect */
+  top: 50%;
+  font-family: 'Arial', sans-serif;
+  font-weight: 900;
+  font-size: 8rem;
+  color: rgba(0,0,0,0.05);
+  transform: translateY(-50%) rotate(90deg);
+  z-index: -1;
+}
+
+/* Animations */
+@keyframes blink {
+  0%, 90%, 100% { height: 15px; }
+  95% { height: 2px; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Nav Indicators */
+
+.nav-hint {
+
+  position: absolute;
+
+  bottom: 5px;
+
+  width: 100%;
+
+  text-align: center;
+
+  font-size: 0.8rem;
+
+  color: #555;
+
+  z-index: 10;
+
+}
+
+
+
+/* --- ADVENTURE TIME CRITTERS --- */
+
+
+
+/* THE BEE */
+
+.at-bee {
+
+  position: absolute;
+
+  width: 45px; height: 35px;
+
+  background: #ffd700;
+
+  border-radius: 50%;
+
+  z-index: 0; /* Behind BMO if crossing */
+
+  animation: flyBee 15s linear infinite;
+
+  /* Stripes using gradient */
+
+  background: linear-gradient(90deg, #ffd700 20%, #333 20%, #333 35%, #ffd700 35%, #ffd700 50%, #333 50%, #333 65%, #ffd700 65%);
+
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.1);
+
+}
+
+
+
+.at-bee::after { /* Face/Eye */
+
+  content: '';
+
+  position: absolute;
+
+  right: 8px; top: 10px;
+
+  width: 4px; height: 4px;
+
+  background: #000;
+
+  border-radius: 50%;
+
+  box-shadow: 8px 0 0 #000; /* Second eye */
+
+}
+
+
+
+.bee-wing {
+
+  position: absolute;
+
+  top: -15px;
+
+  width: 18px; height: 22px;
+
+  background: #fff;
+
+  border-radius: 50%;
+
+  opacity: 0.9;
+
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+
+  animation: flap 0.1s infinite alternate;
+
+}
+
+.bee-wing.left { left: 5px; transform-origin: bottom right; }
+
+.bee-wing.right { left: 20px; animation-delay: 0.05s; transform-origin: bottom left; }
+
+
+
+/* THE BUTTERFLY */
+
+.at-butterfly {
+
+  position: absolute;
+
+  width: 6px; height: 20px;
+
+  background: #444; /* Body */
+
+  border-radius: 5px;
+
+  z-index: 0;
+
+  animation: flyButterfly 20s linear infinite;
+
+}
+
+
+
+.bf-wing {
+
+  position: absolute;
+
+  width: 25px; height: 35px;
+
+  background: #fff;
+
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+
+  top: -5px;
+
+  opacity: 0.95;
+
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+}
+
+.bf-wing.left { right: 3px; transform-origin: right center; animation: wingL 0.2s infinite alternate; }
+
+.bf-wing.right { left: 3px; transform-origin: left center; animation: wingR 0.2s infinite alternate; }
+
+
+
+/* THE WORM */
+
+.at-worm {
+
+  position: fixed;
+
+  bottom: -60px; /* Hidden initially */
+
+  right: 15%;
+
+  width: 30px; height: 70px;
+
+  background: #8ae48a; /* Light Green */
+
+  border: 3px solid #6ac26a;
+
+  border-bottom: none;
+
+  border-radius: 20px 20px 0 0;
+
+  z-index: 100; /* In front */
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  animation: wormPop 8s infinite ease-in-out;
+
+}
+
+
+
+.worm-face {
+
+  margin-top: 15px;
+
+  width: 100%;
+
+  height: 20px;
+
+  position: relative;
+
+}
+
+.worm-face::before, .worm-face::after { /* Eyes */
+
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+
+  width: 4px; height: 4px;
+
+  background: #000;
+
+  border-radius: 50%;
+
+}
+
+.worm-face::before { left: 8px; }
+
+.worm-face::after { right: 8px; }
+
+
+
+.worm-smile {
+
+  position: absolute;
+
+  top: 5px; left: 50%; transform: translateX(-50%);
+
+  width: 8px; height: 4px;
+
+  border-bottom: 2px solid #000;
+
+  border-radius: 0 0 50% 50%;
+
+}
+
+
+
+.worm-seg {
+
+  width: 100%; height: 2px;
+
+  background: #6ac26a;
+
+  margin-top: 8px;
+
+  opacity: 0.5;
+
+}
+
+
+
+/* CRITTER ANIMATIONS */
+
+@keyframes flyBee {
+
+  0% { left: -10%; top: 20%; transform: rotate(10deg); }
+
+  25% { top: 15%; }
+
+  50% { top: 25%; }
+
+  75% { top: 10%; }
+
+  100% { left: 110%; top: 20%; transform: rotate(10deg); }
+
+}
+
+
+
+@keyframes flap { from { transform: scaleY(1) rotate(0deg); } to { transform: scaleY(0.6) rotate(10deg); } }
+
+
+
+@keyframes flyButterfly {
+
+  0% { right: -10%; top: 60%; transform: rotate(-20deg); }
+
+  30% { top: 40%; }
+
+  60% { top: 70%; }
+
+  100% { right: 110%; top: 30%; transform: rotate(-10deg); }
+
+}
+
+
+
+@keyframes wingL { from { transform: perspective(200px) rotateY(0deg); } to { transform: perspective(200px) rotateY(60deg); } }
+
+@keyframes wingR { from { transform: perspective(200px) rotateY(0deg); } to { transform: perspective(200px) rotateY(-60deg); } }
+
+
+
+@keyframes wormPop {
+
+  0%, 5%, 95%, 100% { bottom: -70px; }
+
+  20%, 80% { bottom: 0; }
+
+  40% { transform: rotate(-5deg); }
+
+  60% { transform: rotate(5deg); }
+
+}

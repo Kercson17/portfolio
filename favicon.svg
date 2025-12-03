@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 700">
+  <!-- Main Body -->
+  <rect x="10" y="10" width="480" height="680" rx="60" ry="60" fill="#17a397" stroke="#000" stroke-width="10"/>
+
+  <!-- Screen -->
+  <rect x="60" y="60" width="380" height="280" rx="40" ry="40" fill="#c2e6de" stroke="#000" stroke-width="10"/>
+
+  <!-- Face -->
+  <!-- Left Eye -->
+  <circle cx="170" cy="180" r="15" fill="#000"/>
+  <!-- Right Eye -->
+  <circle cx="330" cy="180" r="15" fill="#000"/>
+  <!-- Mouth (Smile) -->
+  <path d="M 210 220 Q 250 260 290 220" stroke="#000" stroke-width="8" fill="none" stroke-linecap="round"/>
+
+  <!-- Controls Area -->
+  
+  <!-- Floppy Slot (Top Left) -->
+  <rect x="70" y="380" width="160" height="30" rx="5" fill="#0d4d46" stroke="#000" stroke-width="8"/>
+
+  <!-- D-Pad (Bottom Left) -->
+  <g transform="translate(100, 480)">
+    <!-- Vertical -->
+    <rect x="35" y="0" width="30" height="90" rx="5" fill="#facc48" stroke="#000" stroke-width="6"/>
+    <!-- Horizontal -->
+    <rect x="5" y="30" width="90" height="30" rx="5" fill="#facc48" stroke="#000" stroke-width="6"/>
+    <!-- Center Patch to hide crossing strokes if needed, or just let path merge. Using path is cleaner but rects work for simple icon style -->
+    <rect x="38" y="33" width="24" height="24" fill="#facc48"/>
+  </g>
+
+  <!-- Start/Select Buttons (Bottom Left, below D-pad) -->
+  <ellipse cx="120" cy="620" rx="25" ry="10" fill="#082e29" stroke="#000" stroke-width="5" transform="rotate(-15 120 620)"/>
+  <ellipse cx="200" cy="620" rx="25" ry="10" fill="#082e29" stroke="#000" stroke-width="5" transform="rotate(-15 200 620)"/>
+
+  <!-- Right Side Buttons -->
+  
+  <!-- Small Blue Button (Top Right) -->
+  <circle cx="380" cy="400" r="15" fill="#1d4e85" stroke="#000" stroke-width="6"/>
+
+  <!-- Triangle Button (Middle Right) -->
+  <path d="M 330 520 L 360 460 L 390 520 Z" fill="#68c7d6" stroke="#000" stroke-width="6" stroke-linejoin="round"/>
+
+  <!-- Large Red Button (Bottom Right) -->
+  <circle cx="370" cy="580" r="45" fill="#ef4647" stroke="#000" stroke-width="8"/>
+
+  <!-- Small Green Button (Next to Red) -->
+  <circle cx="450" cy="540" r="12" fill="#d6e68a" stroke="#000" stroke-width="6"/>
+
+</svg>
