@@ -117,6 +117,58 @@ export default function Home() {
               />
               <h3>KERCSON G. DIDAL</h3>
               <small>LEVEL 21 | IT STUDENT</small>
+              <br />
+              <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "10px" }}>
+                <a 
+                  href="/Didal_CV.pdf" 
+                  download
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    background: "var(--btn-red)",
+                    color: "#fff",
+                    padding: "5px 12px",
+                    borderRadius: "4px",
+                    fontSize: "0.9rem",
+                    textDecoration: "none",
+                    boxShadow: "2px 2px 0 rgba(0,0,0,0.2)",
+                    fontWeight: "bold"
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "6px" }}>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  DOWNLOAD CV
+                </a>
+                <a 
+                  href="/Didal_CV.pdf" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    background: "var(--bmo-teal)", // Using primary BMO color
+                    color: "#fff",
+                    padding: "5px 12px",
+                    borderRadius: "4px",
+                    fontSize: "0.9rem",
+                    textDecoration: "none",
+                    boxShadow: "2px 2px 0 rgba(0,0,0,0.2)",
+                    fontWeight: "bold"
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "6px" }}>
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 10 7 8"></polyline>
+                  </svg>
+                  VIEW CV
+                </a>
+              </div>
             </div>
             <p style={{ fontSize: "1rem" }}>
               I am a 21-year-old IT student who loves learning new technologies.
