@@ -1,17 +1,32 @@
 import './globals.css';
-import { VT323 } from 'next/font/google';
+import { Inter, Cormorant_Garamond } from 'next/font/google';
 import React from 'react';
+import type { Metadata } from 'next';
 
-const vt323 = VT323({
-  weight: '400',
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-vt323',
+  variable: '--font-inter',
   display: 'swap',
 });
 
-export const metadata = {
-  title: "BMO | Kercson's Portfolio",
-  description: 'A BMO-themed portfolio built with Next.js',
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
+  display: 'swap',
+});
+
+export const metadata: Metadata = {
+  title: "Kercson G. Didal | Portfolio",
+  description: 'Front-End Engineer specializing in high-fidelity interfaces.',
+  icons: {
+    icon: [
+      { url: '/icon.png', sizes: 'any', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({
@@ -20,14 +35,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${vt323.variable}`}>
+    <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
       <head>
-        <link 
-          rel="stylesheet" 
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        {/* Favicon */}
+        <link
+          rel="icon"
+          href="/icon.png"
+          type="image/png"
+          sizes="any"
+        />
+        <link
+          rel="alternate icon"
+          href="/favicon.ico"
+          sizes="any"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="/icon.png"
+        />
+        {/* Font Awesome */}
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         />
       </head>
-      <body>{children}</body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

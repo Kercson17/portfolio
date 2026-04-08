@@ -1,0 +1,450 @@
+import React, { useState, useEffect } from 'react';
+import { Play, Pause, Power, SlidersHorizontal, Activity, RefreshCw } from 'lucide-react';
+
+// --- Web Audio Synthesizers ---
+let audioCtx = null;
+const getAudioContext = () => {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioCtx;
+};
+
+const playKick = (ctx, time) => {
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.frequency.setValueAtTime(150, time);
+  osc.frequency.exponentialRampToValueAtTime(0.001, time + 0.5);
+  gain.gain.setValueAtTime(1, time);
+  gain.gain.exponentialRampToValueAtTime(0.001, time + 0.5);
+  osc.start(time);
+  osc.stop(time + 0.5);
+};
+
+const playSnare = (ctx, time) => {
+  // Noise Body
+  const bufferSize = ctx.sampleRate * 0.2;
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+  const noiseFilter = ctx.createBiquadFilter();
+  noiseFilter.type = 'highpass';
+  noiseFilter.frequency.value = 1000;
+  const noiseGain = ctx.createGain();
+  noiseGain.gain.setValueAtTime(0.6, time);
+  noiseGain.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+  noise.connect(noiseFilter);
+  noiseFilter.connect(noiseGain);
+  noiseGain.connect(ctx.destination);
+  noise.start(time);
+
+  // Snare Snap
+  const osc = ctx.createOscillator();
+  const oscGain = ctx.createGain();
+  osc.type = 'triangle';
+  osc.connect(oscGain);
+  oscGain.connect(ctx.destination);
+  osc.frequency.setValueAtTime(250, time);
+  oscGain.gain.setValueAtTime(0.6, time);
+  oscGain.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+  osc.start(time);
+  osc.stop(time + 0.2);
+};
+
+const playHiHat = (ctx, time) => {
+  const bufferSize = ctx.sampleRate * 0.1;
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+  const bandpass = ctx.createBiquadFilter();
+  bandpass.type = 'bandpass';
+  bandpass.frequency.value = 10000;
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.3, time);
+  gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+  noise.connect(bandpass);
+  bandpass.connect(gain);
+  gain.connect(ctx.destination);
+  noise.start(time);
+};
+
+const playSynth = (ctx, time, note) => {
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  const filter = ctx.createBiquadFilter();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(note, time);
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(2500, time);
+  filter.frequency.exponentialRampToValueAtTime(200, time + 0.2);
+  gain.gain.setValueAtTime(0.15, time);
+  gain.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+  osc.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(time);
+  osc.stop(time + 0.2);
+};
+
+// --- Configuration ---
+const ROWS = 4;
+const COLS = 8;
+const ROW_CONFIG = [
+  { name: 'KICK', color: 'rose', hex: '#f43f5e' },
+  { name: 'SNARE', color: 'amber', hex: '#f59e0b' },
+  { name: 'HI-HAT', color: 'emerald', hex: '#10b981' },
+  { name: 'SYNTH', color: 'cyan', hex: '#06b6d4' }
+];
+
+// Initial beat pattern
+const INITIAL_GRID = [
+  [true, false, false, false, true, false, false, false],
+  [false, false, true, false, false, false, true, false],
+  [true, true, true, true, true, true, true, true],
+  [false, true, false, false, true, false, false, true]
+];
+
+export default function GrooveBoxUI() {
+  const [power, setPower] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [bpm, setBpm] = useState(120);
+  const [currentBeat, setCurrentBeat] = useState(0);
+  const [grid, setGrid] = useState(INITIAL_GRID);
+
+  // --- Audio Trigger Logic ---
+  const playBeatSounds = (beat) => {
+    const ctx = getAudioContext();
+    if (ctx.state === 'suspended') ctx.resume();
+    const time = ctx.currentTime;
+    
+    if (grid[0][beat]) playKick(ctx, time);
+    if (grid[1][beat]) playSnare(ctx, time);
+    if (grid[2][beat]) playHiHat(ctx, time);
+    if (grid[3][beat]) {
+      // A minor pentatonic scale for the synth line
+      const notes = [130.81, 146.83, 164.81, 196.00, 220.00, 130.81, 261.63, 196.00];
+      playSynth(ctx, time, notes[beat]);
+    }
+  };
+
+  useEffect(() => {
+    if (isPlaying && power) {
+      playBeatSounds(currentBeat);
+    }
+  }, [currentBeat, isPlaying]);
+
+  // --- Sequencer Logic ---
+  useEffect(() => {
+    let interval;
+    if (power && isPlaying) {
+      // Calculate milliseconds per 8th note based on BPM
+      const msPerBeat = (60 / bpm) * 1000 / 2; 
+      
+      interval = setInterval(() => {
+        setCurrentBeat((prev) => (prev + 1) % COLS);
+      }, msPerBeat);
+    } else {
+      setCurrentBeat(0);
+    }
+    
+    return () => clearInterval(interval);
+  }, [isPlaying, bpm, power]);
+
+  // --- Handlers ---
+  const togglePad = (r, c) => {
+    if (!power) return;
+    const newGrid = [...grid];
+    newGrid[r] = [...newGrid[r]];
+    newGrid[r][c] = !newGrid[r][c];
+    setGrid(newGrid);
+
+    // Preview sound when enabling pad
+    if (newGrid[r][c]) {
+      const ctx = getAudioContext();
+      if (ctx.state === 'suspended') ctx.resume();
+      const time = ctx.currentTime;
+      if (r === 0) playKick(ctx, time);
+      if (r === 1) playSnare(ctx, time);
+      if (r === 2) playHiHat(ctx, time);
+      if (r === 3) {
+        const notes = [130.81, 146.83, 164.81, 196.00, 220.00, 130.81, 261.63, 196.00];
+        playSynth(ctx, time, notes[c]);
+      }
+    }
+  };
+
+  const clearGrid = () => {
+    setGrid(Array(ROWS).fill().map(() => Array(COLS).fill(false)));
+    setIsPlaying(false);
+  };
+
+  const togglePower = () => {
+    setPower(!power);
+    setIsPlaying(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#09090b] flex items-center justify-center p-4 md:p-8 font-mono selection:bg-cyan-500/30 overflow-hidden relative">
+      
+      {/* Background Ambient Studio Glow */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] h-[90vw] max-w-[1000px] max-h-[1000px] rounded-full blur-[150px] pointer-events-none transition-colors duration-1000 opacity-20"
+        style={{ backgroundColor: power ? (isPlaying ? '#06b6d4' : '#52525b') : '#000' }}
+      />
+
+      {/* --- Main Premium Device Shell --- */}
+      <div className={`relative z-10 w-full max-w-5xl bg-gradient-to-b from-[#222228] to-[#1c1c21] rounded-[2.5rem] p-6 sm:p-12 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.9),inset_0_2px_4px_rgba(255,255,255,0.05)] border border-[#33333b] transition-all duration-700 ${!power ? 'grayscale-[0.6] brightness-50' : ''}`}>
+        
+        {/* Hardware details (Screws) */}
+        <div className="absolute top-6 left-6 w-3 h-3 rounded-full bg-black/40 shadow-inner flex items-center justify-center"><div className="w-1.5 h-1.5 rounded-full bg-zinc-800/80" /></div>
+        <div className="absolute top-6 right-6 w-3 h-3 rounded-full bg-black/40 shadow-inner flex items-center justify-center"><div className="w-1.5 h-1.5 rounded-full bg-zinc-800/80" /></div>
+        <div className="absolute bottom-6 left-6 w-3 h-3 rounded-full bg-black/40 shadow-inner flex items-center justify-center"><div className="w-1.5 h-1.5 rounded-full bg-zinc-800/80" /></div>
+        <div className="absolute bottom-6 right-6 w-3 h-3 rounded-full bg-black/40 shadow-inner flex items-center justify-center"><div className="w-1.5 h-1.5 rounded-full bg-zinc-800/80" /></div>
+
+        {/* Device Branding */}
+        <div className="absolute top-8 left-1/2 -translate-x-1/2 flex flex-col items-center">
+          <h1 className="text-xl sm:text-2xl font-black tracking-[0.2em] text-zinc-400/80 drop-shadow-sm">OP-SEQUENCE</h1>
+          <div className="w-12 h-0.5 bg-cyan-500/50 mt-2 rounded-full shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
+        </div>
+
+        {/* --- Top Control Panel --- */}
+        <div className="mt-16 mb-12 flex flex-col lg:flex-row gap-8 items-center justify-between">
+          
+          {/* OLED Screen */}
+          <div className="relative w-64 h-28 bg-[#020617] rounded-xl border-[6px] border-[#0f172a] shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_0_30px_rgba(0,0,0,0.8)] overflow-hidden flex items-center justify-center group">
+            
+            {/* Glass Glare Reflection */}
+            <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-tr from-transparent via-transparent to-white/10 opacity-50" />
+            <div className="absolute -top-[150%] -left-[50%] w-[200%] h-[200%] bg-gradient-to-br from-white/5 to-transparent rotate-45 pointer-events-none z-20 transition-transform duration-1000 group-hover:translate-y-[10%]" />
+
+            {power ? (
+              <div className="w-full h-full p-4 flex flex-col justify-between relative z-10">
+                <div className="flex justify-between items-start text-cyan-400/80 text-[10px] font-bold tracking-[0.3em]">
+                  <span className={isPlaying ? 'animate-pulse' : ''}>{isPlaying ? '▶ PLAYING' : '■ STOPPED'}</span>
+                  <span>PATTERN.01</span>
+                </div>
+                
+                <div className="flex items-end justify-between">
+                  {/* Audio Visualizer */}
+                  <div className="flex items-end gap-1 h-10 opacity-90">
+                    {[...Array(12)].map((_, i) => (
+                      <div 
+                        key={i} 
+                        className="w-1.5 bg-cyan-400 rounded-sm transition-all duration-75"
+                        style={{ 
+                          height: isPlaying ? `${Math.max(15, Math.random() * 100)}%` : '4px',
+                          boxShadow: '0 0 12px rgba(34, 211, 238, 0.6)'
+                        }}
+                      />
+                    ))}
+                  </div>
+                  {/* BPM Display */}
+                  <div className="text-4xl font-black tracking-tighter text-white drop-shadow-[0_0_15px_rgba(34,211,238,0.8)] tabular-nums">
+                    {bpm}
+                    <span className="text-[10px] tracking-widest text-cyan-500/80 ml-1 absolute bottom-1 -right-8">BPM</span>
+                  </div>
+                </div>
+                {/* LCD Scanline Overlay */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.4)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03))] bg-[length:100%_4px,3px_100%] pointer-events-none opacity-40 z-10" />
+              </div>
+            ) : (
+              <div className="absolute inset-0 bg-[#02040a]" />
+            )}
+          </div>
+
+          {/* Master Controls */}
+          <div className="flex flex-col sm:flex-row gap-8 items-center bg-black/20 p-6 rounded-2xl border border-white/5 shadow-inner">
+            
+            {/* Pro Fader (BPM) */}
+            <div className="flex flex-col gap-3">
+              <label className="text-[10px] text-zinc-400 font-bold tracking-[0.3em] flex items-center gap-2 justify-center">
+                <SlidersHorizontal size={14} /> TEMPO
+              </label>
+              <div className="h-10 w-48 relative flex items-center px-2">
+                {/* Fader Track */}
+                <div className="absolute inset-x-2 h-2 bg-black rounded-full shadow-inner border border-zinc-800" />
+                {/* Tick marks */}
+                <div className="absolute inset-x-2 flex justify-between px-1 pointer-events-none opacity-30">
+                  {[...Array(9)].map((_, i) => <div key={i} className="w-0.5 h-4 bg-white -mt-1" />)}
+                </div>
+                
+                <input 
+                  type="range" 
+                  min="60" max="180" 
+                  value={bpm} 
+                  onChange={(e) => setBpm(Number(e.target.value))}
+                  disabled={!power}
+                  className="w-full h-2 appearance-none outline-none custom-fader z-10 bg-transparent"
+                />
+              </div>
+            </div>
+
+            {/* Hardware Transport Buttons */}
+            <div className="flex gap-4 items-end">
+              <button 
+                onClick={clearGrid}
+                className="w-14 h-14 rounded-2xl bg-[#2a2a32] border-b-[6px] border-[#18181b] flex items-center justify-center text-zinc-400 hover:text-white hover:bg-[#33333b] active:border-b-0 active:translate-y-[6px] transition-all shadow-lg"
+                title="Clear Sequence"
+              >
+                <RefreshCw size={20} />
+              </button>
+              
+              <button 
+                onClick={() => {
+                  if (!power) return;
+                  // Ensure audio context is ready upon user interaction
+                  const ctx = getAudioContext();
+                  if (ctx.state === 'suspended') ctx.resume();
+                  setIsPlaying(!isPlaying);
+                }}
+                className={`w-20 h-16 rounded-2xl border-b-[6px] flex items-center justify-center transition-all shadow-lg
+                  ${!power ? 'bg-[#2a2a32] border-[#18181b] text-zinc-600' :
+                    isPlaying 
+                    ? 'bg-emerald-400 border-emerald-700 text-emerald-950 shadow-[0_0_30px_rgba(52,211,153,0.3)] active:border-b-0 active:translate-y-[6px]' 
+                    : 'bg-zinc-200 border-zinc-400 text-zinc-900 hover:bg-white active:border-b-0 active:translate-y-[6px]'
+                  }
+                `}
+              >
+                {isPlaying ? <Pause size={24} className="fill-current" /> : <Play size={24} className="fill-current" />}
+              </button>
+
+              <button 
+                onClick={togglePower}
+                className={`w-14 h-14 rounded-2xl border-b-[6px] flex items-center justify-center transition-all active:border-b-0 active:translate-y-[6px] shadow-lg
+                  ${power ? 'bg-rose-500 border-rose-800 text-white shadow-[0_0_20px_rgba(244,63,94,0.4)]' : 'bg-[#2a2a32] border-[#18181b] text-zinc-500'}
+                `}
+              >
+                <Power size={20} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* --- The Sequencer Grid --- */}
+        <div className="bg-[#121217] p-6 sm:p-10 rounded-3xl shadow-[inset_0_10px_30px_rgba(0,0,0,0.8)] border border-white/5 relative">
+          
+          {/* Playhead Indicator Dots */}
+          <div className="flex ml-16 md:ml-24 mb-6 gap-3 sm:gap-6">
+            {[...Array(COLS)].map((_, c) => (
+              <div key={c} className="flex-1 flex justify-center">
+                <div className={`w-2 h-2 rounded-full transition-all duration-75 ${isPlaying && currentBeat === c ? 'bg-white shadow-[0_0_15px_white] scale-150' : 'bg-zinc-800'}`} />
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-4 sm:gap-6">
+            {grid.map((row, r) => (
+              <div key={r} className="flex items-center gap-4 sm:gap-6">
+                
+                {/* Track Label */}
+                <div className="w-12 md:w-16 text-right flex-shrink-0">
+                  <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-zinc-500 uppercase">
+                    {ROW_CONFIG[r].name}
+                  </span>
+                </div>
+
+                {/* The Pads */}
+                <div className="flex flex-1 gap-3 sm:gap-6">
+                  {row.map((isActive, c) => {
+                    const isTriggered = isPlaying && currentBeat === c && isActive;
+                    const config = ROW_CONFIG[r];
+                    
+                    let padBg = 'bg-[#1e1e24]';
+                    let padBorder = 'border-[#0a0a0c]';
+                    let padGlow = '';
+                    let innerOpacity = 'opacity-10';
+
+                    if (isActive) {
+                      if (isTriggered) {
+                        padBg = 'bg-white';
+                        padBorder = 'border-transparent';
+                        padGlow = `0 0 30px ${config.hex}, 0 0 60px ${config.hex}`;
+                        innerOpacity = 'opacity-0';
+                      } else {
+                        // Using arbitrary inline styles for specific hex colors to guarantee they render
+                        padBg = 'bg-current'; // We'll set the color via style
+                        padBorder = 'border-current';
+                        padGlow = `0 0 15px ${config.hex}60`;
+                        innerOpacity = 'opacity-30';
+                      }
+                    } else if (isPlaying && currentBeat === c) {
+                      padBg = 'bg-[#2a2a32]'; // Playhead passing over inactive
+                    }
+
+                    return (
+                      <button
+                        key={`${r}-${c}`}
+                        onClick={() => togglePad(r, c)}
+                        className={`relative flex-1 aspect-square rounded-xl sm:rounded-2xl transition-all duration-75 flex items-center justify-center shadow-lg
+                          ${!power ? 'pointer-events-none' : 'hover:brightness-125'}
+                          ${isActive && isTriggered ? 'scale-110 -translate-y-2 z-10' : ''}
+                        `}
+                        style={{
+                          backgroundColor: isActive && !isTriggered ? `${config.hex}CC` : undefined, // CC is 80% opacity hex
+                          borderColor: isActive && !isTriggered ? `${config.hex}` : undefined,
+                          borderBottomWidth: isActive && isTriggered ? '0px' : '6px',
+                          transform: isActive && isTriggered ? 'translateY(6px) scale(1.05)' : 'translateY(0px)',
+                          boxShadow: padGlow || '0 6px 15px rgba(0,0,0,0.5)',
+                        }}
+                      >
+                        <div className={`absolute inset-0 rounded-xl sm:rounded-2xl ${padBg} ${padBorder} ${isActive && !isTriggered ? 'mix-blend-screen' : ''}`} />
+                        {/* Silicone diffusion center dot */}
+                        <div className={`w-3 h-3 rounded-full bg-white z-10 transition-opacity ${innerOpacity}`} />
+                      </button>
+                    );
+                  })}
+                </div>
+
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      {/* --- Required Custom CSS --- */}
+      <style dangerouslySetInnerHTML={{__html: `
+        /* Premium Fader Styling */
+        .custom-fader::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 24px;
+          height: 48px;
+          border-radius: 4px;
+          background: linear-gradient(180deg, #f4f4f5 0%, #d4d4d8 50%, #a1a1aa 100%);
+          cursor: pointer;
+          border: 1px solid #3f3f46;
+          border-bottom: 6px solid #18181b;
+          box-shadow: 0 10px 15px -3px rgba(0,0,0,0.8), inset 0 1px 2px rgba(255,255,255,0.8);
+          position: relative;
+          transition: transform 0.1s;
+        }
+        
+        /* The groove line on the fader thumb */
+        .custom-fader::-webkit-slider-thumb::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 10%;
+          right: 10%;
+          height: 2px;
+          background: #000;
+          transform: translateY(-50%);
+          border-bottom: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .custom-fader::-webkit-slider-thumb:active {
+          transform: translateY(4px);
+          border-bottom-width: 2px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.8), inset 0 1px 2px rgba(255,255,255,0.8);
+        }
+      `}} />
+    </div>
+  );
+}
