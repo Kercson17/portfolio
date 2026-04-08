@@ -14,21 +14,21 @@ const projects = [
     description: "A premium e-commerce platform for high-end mobile devices and accessories.",
     image: "/fonus.png",
     tags: ["Next.js", "Tailwind CSS", "GSAP"],
-    links: { live: "#", github: "#" }
+    links: { live: "https://fonuscebu.netlify.app/", github: "#" }
   },
   {
     title: "VOTING SYSTEM",
     description: "Secure and transparent digital voting platform with real-time results.",
     image: "/voting.png",
     tags: ["React", "Node.js", "MongoDB"],
-    links: { live: "#", github: "#" }
+    links: { live: "https://sscelection2025.vercel.app/admin-login", github: "#" }
   },
   {
     title: "BRISASOLEI RESORT",
     description: "A luxury resort website showcasing premium accommodations and amenities.",
     image: "/brisa.png",
     tags: ["TypeScript", "Tailwind CSS", "Framer Motion"],
-    links: { live: "#", github: "#" }
+    links: { live: "https://brisasolei.netlify.app/", github: "#" }
   }
 ];
 
@@ -452,35 +452,35 @@ function GrooveBox() {
   };
 
   return (
-    <div className={`w-full max-w-5xl mx-auto bg-[#1c1c21] rounded-[4rem] p-10 md:p-16 shadow-2xl relative my-24 reveal border-4 border-zinc-800 ${!power ? 'grayscale-[0.6] brightness-50' : ''}`}>
-      <div className="flex flex-col lg:flex-row gap-12 items-center justify-between mb-16">
-        <div className="w-80 h-32 bg-[#020617] rounded-3xl border-8 border-[#0f172a] p-6 flex flex-col justify-between shadow-inner">
-          <div className="flex justify-between text-cyan-400 text-xs font-black tracking-[0.3em]">
+    <div className={`w-full max-w-5xl mx-auto bg-[#1c1c21] rounded-[2.5rem] md:rounded-[4rem] p-4 md:p-16 shadow-2xl relative my-16 md:my-24 reveal border-2 md:border-4 border-zinc-800 ${!power ? 'grayscale-[0.6] brightness-50' : ''}`}>
+      <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center justify-between mb-10 md:mb-16">
+        <div className="w-full max-w-[320px] h-28 md:h-32 bg-[#020617] rounded-2xl md:rounded-3xl border-4 md:border-8 border-[#0f172a] p-4 md:p-6 flex flex-col justify-between shadow-inner">
+          <div className="flex justify-between text-cyan-400 text-[10px] md:text-xs font-black tracking-[0.3em]">
             <span className={isPlaying ? 'animate-pulse' : ''}>{isPlaying ? '▶ LIVE' : '■ READY'}</span>
             <span className="tabular-nums">{bpm} BPM</span>
           </div>
-          <div className="flex items-end gap-1.5 h-10">
-            {[...Array(20)].map((_, i) => (
+          <div className="flex items-end gap-1 h-8 md:h-10">
+            {[...Array(15)].map((_, i) => (
               <div key={i} className="flex-1 bg-cyan-400/60 rounded-sm shadow-[0_0_10px_rgba(34,211,238,0.3)]" style={{ height: isPlaying ? `${20 + Math.random() * 80}%` : '4px' }} />
             ))}
           </div>
         </div>
 
-        <div className="flex gap-8 items-center bg-black/30 p-8 rounded-[3rem] border border-white/5 shadow-inner">
-          <button onClick={() => { if (!power) return; getAudioContext()?.resume(); setIsPlaying(!isPlaying); }} className={`w-24 h-20 rounded-[2rem] border-b-8 flex items-center justify-center transition-all ${isPlaying ? 'bg-emerald-400 border-emerald-700 text-emerald-950 scale-95' : 'bg-zinc-100 border-zinc-400 text-zinc-900 active:translate-y-1 active:border-b-4'}`}>{isPlaying ? <i className="fas fa-pause text-2xl"></i> : <i className="fas fa-play text-2xl"></i>}</button>
-          <button onClick={() => { setPower(!power); setIsPlaying(false); }} className={`w-16 h-16 rounded-2xl border-b-8 flex items-center justify-center transition-all ${power ? 'bg-rose-500 border-rose-800 text-white shadow-xl shadow-rose-500/30' : 'bg-zinc-800 border-zinc-900 text-zinc-500'}`}><i className="fas fa-power-off"></i></button>
+        <div className="flex gap-4 md:gap-8 items-center bg-black/30 p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] border border-white/5 shadow-inner">
+          <button onClick={() => { if (!power) return; getAudioContext()?.resume(); setIsPlaying(!isPlaying); }} className={`w-16 h-14 md:w-24 md:h-20 rounded-xl md:rounded-[2rem] border-b-4 md:border-b-8 flex items-center justify-center transition-all ${isPlaying ? 'bg-emerald-400 border-emerald-700 text-emerald-950 scale-95' : 'bg-zinc-100 border-zinc-400 text-zinc-900 active:translate-y-1 active:border-b-4'}`}>{isPlaying ? <i className="fas fa-pause text-xl md:text-2xl"></i> : <i className="fas fa-play text-xl md:text-2xl"></i>}</button>
+          <button onClick={() => { setPower(!power); setIsPlaying(false); }} className={`w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl border-b-4 md:border-b-8 flex items-center justify-center transition-all ${power ? 'bg-rose-500 border-rose-800 text-white shadow-xl shadow-rose-500/30' : 'bg-zinc-800 border-zinc-900 text-zinc-500'}`}><i className="fas fa-power-off"></i></button>
         </div>
       </div>
 
-      <div className="bg-[#121217] p-8 md:p-14 rounded-[3.5rem] border border-white/5 shadow-[inset_0_10px_30px_rgba(0,0,0,0.5)]">
-        <div className="flex flex-col gap-8">
+      <div className="bg-[#121217] p-4 md:p-14 rounded-[2rem] md:rounded-[3.5rem] border border-white/5 shadow-[inset_0_10px_30px_rgba(0,0,0,0.5)] overflow-x-auto">
+        <div className="flex flex-col gap-4 md:gap-8 min-w-[600px] md:min-w-0">
           {grid.map((row, r) => (
-            <div key={r} className="flex items-center gap-6">
-              <div className="w-16 text-right"><span className="text-[11px] font-black text-zinc-500 uppercase tracking-widest">{ROW_CONFIG[r].name}</span></div>
-              <div className="flex-1 grid grid-cols-8 gap-4">
+            <div key={r} className="flex items-center gap-4 md:gap-6">
+              <div className="w-12 md:w-16 text-right"><span className="text-[10px] md:text-[11px] font-black text-zinc-500 uppercase tracking-widest">{ROW_CONFIG[r].name}</span></div>
+              <div className="flex-1 grid grid-cols-8 gap-3 md:gap-4">
                 {row.map((isActive, c) => (
-                  <button key={`${r}-${c}`} onClick={() => togglePad(r, c)} className={`aspect-square rounded-2xl transition-all duration-75 relative shadow-lg ${isActive ? 'scale-105 z-10' : ''} ${isPlaying && currentBeat === c ? 'brightness-150 ring-4 ring-white/30' : ''}`} style={{ backgroundColor: isActive ? ROW_CONFIG[r].hex : '#1e1e24', borderBottom: isActive ? `6px solid rgba(0,0,0,0.4)` : '6px solid #000' }}>
-                    <div className={`absolute inset-0 rounded-2xl bg-white/10 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
+                  <button key={`${r}-${c}`} onClick={() => togglePad(r, c)} className={`aspect-square rounded-lg md:rounded-2xl transition-all duration-75 relative shadow-lg ${isActive ? 'scale-105 z-10' : ''} ${isPlaying && currentBeat === c ? 'brightness-150 ring-4 ring-white/30' : ''}`} style={{ backgroundColor: isActive ? ROW_CONFIG[r].hex : '#1e1e24', borderBottom: isActive ? `4px solid rgba(0,0,0,0.4)` : '4px solid #000' }}>
+                    <div className={`absolute inset-0 rounded-lg md:rounded-2xl bg-white/10 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
                   </button>
                 ))}
               </div>
@@ -497,6 +497,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [activeQuote, setActiveQuote] = useState("");
+  const [expandedExpertise, setExpandedExpertise] = useState<number | null>(null);
 
   const mainRef = useRef<HTMLDivElement>(null);
   const heroSectionRef = useRef<HTMLElement>(null);
@@ -630,7 +631,7 @@ export default function Home() {
       }
 
       // Sequential Fade Reveals
-      const animatedSections = ["#uiux", "#contact"];
+      const animatedSections = ["#expertise", "#uiux", "#contact"];
       animatedSections.forEach((id) => {
         const elements = document.querySelectorAll(`${id} .reveal`);
         if (elements.length > 0) {
@@ -685,52 +686,6 @@ export default function Home() {
               }
             }
           );
-        });
-      }
-
-      // Expertise: "Spotlight List"
-      const expertiseSection = document.querySelector("#expertise");
-      if (expertiseSection) {
-        const items = expertiseSection.querySelectorAll(".spotlight-item");
-        const spotlightGlow: any = expertiseSection.querySelector(".expertise-spotlight");
-
-        // 1. Mouse Tracking for Spotlight
-        mm.add("(min-width: 1024px)", () => {
-          const onMouseMove = (e: MouseEvent) => {
-            const rect = expertiseSection.getBoundingClientRect();
-            const x = e.clientX;
-            const y = e.clientY;
-            spotlightGlow.style.setProperty("--x", `${x}px`);
-            spotlightGlow.style.setProperty("--y", `${y}px`);
-            gsap.to(spotlightGlow, { opacity: 1, duration: 0.5 });
-          };
-          const onMouseLeave = () => gsap.to(spotlightGlow, { opacity: 0, duration: 0.5 });
-
-          expertiseSection.addEventListener("mousemove", onMouseMove as any);
-          expertiseSection.addEventListener("mouseleave", onMouseLeave);
-        });
-
-        // 2. Sequential Reveal
-        items.forEach((item) => {
-          const title = item.querySelector("h3");
-          const skills = item.querySelectorAll(".spotlight-skill");
-          const description = item.querySelector("p");
-
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: item,
-              start: "top 85%",
-              toggleActions: "play none none reverse"
-            }
-          });
-
-          tl.fromTo(title, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 1, ease: "power3.out" })
-            .fromTo(description, { opacity: 0 }, { opacity: 0.6, duration: 0.8 }, "-=0.6")
-            .fromTo(skills, 
-              { opacity: 0, scale: 0.8, y: 10 },
-              { opacity: 1, scale: 1, y: 0, duration: 0.6, stagger: 0.05, ease: "back.out(1.7)" },
-              "-=0.4"
-            );
         });
       }
 
@@ -859,10 +814,10 @@ export default function Home() {
           <div className="relative z-10 flex flex-col items-center">
             {/* Blooming Typography */}
             <div className="overflow-hidden">
-              <h1 className="loader-bloom-name text-[12vw] md:text-8xl font-black italic tracking-[-0.05em] uppercase font-serif text-[#4E342E] leading-none">
+              <h1 className="loader-bloom-name text-[12vw] md:text-8xl font-black italic uppercase font-serif text-[#4E342E] leading-none">
                 { "K. Didal".split("").map((char, i) => (
                   <span key={i} className="inline-block bloom-char opacity-0 blur-[20px] scale-[0.5]">
-                    {char === " " ? "\u00A0" : char}
+                    {char === " " ? "\u00A0\u00A0" : char}
                   </span>
                 ))}
               </h1>
@@ -937,7 +892,7 @@ export default function Home() {
           <div className="w-full lg:w-[55%] flex flex-col items-center lg:items-start text-center lg:text-left">
             <div className="hero-text-part">
               <span className="section-title">Aspiring Front-End Developer</span>
-              <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[110px] font-black leading-[0.9] tracking-tighter uppercase italic mb-8 font-serif">
+              <h1 className="text-4xl sm:text-7xl md:text-8xl lg:text-[110px] font-black leading-[0.9] tracking-tighter uppercase italic mb-8 font-serif">
                 Turning <br />
                 <span className="text-[#8D6E63] font-medium not-italic font-sans">Ideas</span> <br />
                 Into Reality.
@@ -972,7 +927,7 @@ export default function Home() {
 
         {/* ABOUT: "The Story" with Large Backdrop */}
         <section id="about" ref={aboutSectionRef} className="py-24 md:py-48 relative overflow-hidden border-t border-[#8D6E63]/10 reveal">
-          <div className="about-backdrop absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#8D6E63]/5 text-[40vw] md:text-[30vw] font-black select-none pointer-events-none uppercase italic font-serif">
+          <div className="about-backdrop absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#8D6E63]/5 text-[35vw] md:text-[30vw] font-black select-none pointer-events-none uppercase italic font-serif">
             Didal
           </div>
           <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
@@ -986,90 +941,48 @@ export default function Home() {
           </div>
         </section>
 
-        {/* EXPERTISE: Glassmorphism Bento Grid */}
+        {/* EXPERTISE: Sleek Accordion */}
         <section id="expertise" className="py-24 md:py-48 border-t border-[#8D6E63]/10 reveal">
-          <div className="mb-16 md:mb-24">
+          <div className="mb-16 md:mb-24 px-4 md:px-8 max-w-[1400px] mx-auto">
             <span className="section-title reveal">Proficiency</span>
             <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic leading-none font-serif reveal">Expertise.</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 auto-rows-[180px] gap-4 md:gap-6 perspective-1000">
-            {/* Front-End: Large Feature Card */}
-            <div className="expertise-card md:col-span-4 md:row-span-2 bg-[#F2EBE4] p-8 md:p-12 group reveal flex flex-col justify-between overflow-hidden relative rounded-[2.5rem] shadow-xl border border-[#8D6E63]/10">
-              <div className="relative z-10">
-                <div className="expertise-icon w-16 h-16 bg-[#4E342E] rounded-2xl flex items-center justify-center text-white mb-8 transition-all duration-500 shadow-lg group-hover:scale-110 group-hover:rotate-3">
-                  <i className="fab fa-react text-2xl"></i>
+          <div className="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col">
+            {skills.map((skill, index) => (
+              <div 
+                key={index} 
+                onClick={() => setExpandedExpertise(expandedExpertise === index ? null : index)}
+                className={`group border-b border-[#8D6E63]/20 flex flex-col py-8 cursor-pointer reveal transition-all duration-500 px-4 md:px-6 rounded-2xl ${expandedExpertise === index ? 'bg-[#8D6E63]/5 shadow-sm' : 'hover:bg-[#8D6E63]/5'}`}
+              >
+                <div className="flex justify-between items-center w-full">
+                  <h3 className={`text-3xl md:text-6xl font-black tracking-tighter uppercase italic font-serif transition-colors duration-500 ${expandedExpertise === index ? 'text-[#8D6E63]' : 'text-[#4E342E] group-hover:text-[#8D6E63]'}`}>
+                    <span className="text-[14px] md:text-[20px] mr-4 md:mr-10 opacity-40 font-sans not-italic tracking-[0.2em]">0{index + 1}</span>
+                    {skill.category}
+                  </h3>
+                  <div className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full transition-all duration-500 shadow-sm ${expandedExpertise === index ? 'bg-[#8D6E63] text-white rotate-180' : 'bg-[#F2EBE4] text-[#8D6E63]'}`}>
+                    {expandedExpertise === index ? <i className="fas fa-chevron-up"></i> : skill.items[0].icon}
+                  </div>
                 </div>
-                <h4 className="text-[12px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">{skills[0].category}</h4>
-                <p className="text-lg md:text-xl font-bold text-[#4E342E] leading-relaxed max-w-md">
-                  {skills[0].description}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 relative z-10">
-                {skills[0].items.map((item, iIndex) => (
-                  <span key={iIndex} className="text-[10px] md:text-[11px] font-black text-white bg-[#8D6E63] px-4 py-2 rounded-xl shadow-md transform group-hover:translate-y-[-2px] transition-transform">{item.name}</span>
-                ))}
-              </div>
-              {/* Decorative Background Icon */}
-              <i className="fab fa-react absolute -bottom-10 -right-10 text-[220px] text-[#8D6E63]/10 rotate-12 group-hover:rotate-0 group-hover:scale-110 transition-all duration-1000"></i>
-            </div>
-
-            {/* Back-End Card - High Contrast */}
-            <div className="expertise-card md:col-span-2 md:row-span-2 bg-[#4E342E] p-8 group reveal flex flex-col justify-between rounded-[2.5rem] shadow-2xl overflow-hidden relative text-white">
-              <div className="relative z-10">
-                <div className="expertise-icon w-14 h-14 bg-[#8D6E63] rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-110">
-                  <i className="fab fa-node-js text-xl"></i>
+                
+                <div 
+                  className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${expandedExpertise === index ? 'max-h-[800px] opacity-100 mt-10' : 'max-h-0 opacity-0 mt-0'}`}
+                >
+                  <div className="flex flex-col lg:flex-row justify-between lg:items-end gap-8 border-t border-[#8D6E63]/10 pt-8">
+                    <p className="text-lg md:text-xl font-medium text-[#4E342E]/70 max-w-2xl leading-relaxed">
+                      {skill.description}
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      {skill.items.map((item, iIndex) => (
+                        <span key={iIndex} className="text-[10px] md:text-[11px] font-bold text-[#4E342E] bg-white border border-[#8D6E63]/20 px-4 py-2 rounded-xl shadow-sm">
+                          {item.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <h4 className="text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">{skills[1].category}</h4>
-                <p className="text-sm font-bold text-white/90 leading-relaxed">
-                  {skills[1].description}
-                </p>
               </div>
-              <div className="flex flex-wrap gap-2 relative z-10">
-                {skills[1].items.map((item, iIndex) => (
-                  <span key={iIndex} className="text-[9px] font-bold text-white bg-white/10 px-3 py-1.5 rounded-lg border border-white/5 backdrop-blur-sm">{item.name}</span>
-                ))}
-              </div>
-              <i className="fab fa-node-js absolute -bottom-5 -right-5 text-[150px] text-white/5 -rotate-12 group-hover:rotate-0 transition-transform duration-1000"></i>
-            </div>
-
-            {/* Data Systems Card */}
-            <div className="expertise-card md:col-span-3 md:row-span-2 bg-white p-8 group reveal flex flex-col justify-between rounded-[2.5rem] shadow-xl border border-[#8D6E63]/5 overflow-hidden relative">
-              <div className="relative z-10">
-                <div className="expertise-icon w-14 h-14 bg-[#F2EBE4] rounded-2xl flex items-center justify-center text-[#8D6E63] mb-6 shadow-md group-hover:scale-110">
-                  <i className="fas fa-server text-xl"></i>
-                </div>
-                <h4 className="text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">{skills[2].category}</h4>
-                <p className="text-sm font-bold text-[#4E342E]/80 leading-relaxed mb-6">
-                  {skills[2].description}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2 relative z-10">
-                {skills[2].items.map((item, iIndex) => (
-                  <span key={iIndex} className="text-[9px] font-bold text-[#4E342E] bg-[#F2EBE4] px-3 py-1.5 rounded-lg">{item.name}</span>
-                ))}
-              </div>
-              <i className="fas fa-database absolute -bottom-5 -right-5 text-[150px] text-[#8D6E63]/5 rotate-6 group-hover:rotate-0 transition-transform duration-1000"></i>
-            </div>
-
-            {/* Engineering Card */}
-            <div className="expertise-card md:col-span-3 md:row-span-2 bg-[#8D6E63] p-8 group reveal flex flex-col justify-between rounded-[2.5rem] shadow-xl overflow-hidden relative text-white text-white">
-              <div className="relative z-10">
-                <div className="expertise-icon w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-110">
-                  <i className="fab fa-github text-xl"></i>
-                </div>
-                <h4 className="text-[10px] font-black tracking-[0.4em] uppercase text-white/60 mb-4">{skills[3].category}</h4>
-                <p className="text-sm font-bold text-white leading-relaxed">
-                  {skills[3].description}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2 relative z-10">
-                {skills[3].items.map((item, iIndex) => (
-                  <span key={iIndex} className="text-[9px] font-bold text-white bg-[#4E342E]/40 px-3 py-1.5 rounded-lg border border-white/10">{item.name}</span>
-                ))}
-              </div>
-              <i className="fas fa-microchip absolute -bottom-5 -right-5 text-[150px] text-white/10 -rotate-6 group-hover:rotate-0 transition-transform duration-1000"></i>
-            </div>
+            ))}
           </div>
         </section>
 
@@ -1140,74 +1053,76 @@ export default function Home() {
 
         {/* WORK: Infinite Marquee Background */}
         <section id="work" ref={projectsSectionRef} className="py-24 md:py-48 border-t border-[#8D6E63]/10 reveal">
-          <div className="mb-16 md:mb-24 flex flex-col items-start px-4 md:px-0">
-            <span className="section-title reveal">Selected Works</span>
-            <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic leading-none font-serif reveal">Projects.</h2>
-          </div>
+          <div className="max-w-[1400px] mx-auto px-6 md:px-16">
+            <div className="mb-16 md:mb-24 flex flex-col items-start px-4 md:px-0">
+              <span className="section-title reveal text-[#8D6E63]">Selected Works</span>
+              <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic leading-none font-serif reveal text-[#4E342E]">Projects.</h2>
+            </div>
 
-          <div className="space-y-32 md:space-y-64 overflow-hidden">
-            {projects.map((project, index) => {
-              const isEven = index % 2 === 0;
-              // Create a repeating string of tags for the marquee
-              const marqueeText = [...project.tags, ...project.tags, ...project.tags, ...project.tags].join("  •  ");
-              
-              return (
-                <div 
-                  key={index} 
-                  data-project-index={index}
-                  className={`project-card-container group relative flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-24 items-center reveal w-full py-10`}
-                >
-                  {/* The Infinite Marquee Background */}
-                  <div className="absolute top-1/2 -translate-y-1/2 w-[200vw] -left-[50vw] overflow-hidden opacity-10 pointer-events-none z-0">
-                    <div className="flex whitespace-nowrap animate-marquee">
-                      <span className="text-[15vw] md:text-[8vw] font-black uppercase italic font-serif text-[#4E342E] tracking-tighter px-10">
-                        {marqueeText}
-                      </span>
-                      <span className="text-[15vw] md:text-[8vw] font-black uppercase italic font-serif text-[#4E342E] tracking-tighter px-10">
-                        {marqueeText}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Project Image Area */}
-                  <div className="w-full lg:w-[55%] project-image-container relative z-10">
-                    <div className="relative aspect-[16/10] md:aspect-[16/9] rounded-[2.5rem] md:rounded-[4rem] overflow-hidden soft-shadow border border-[#8D6E63]/10 bg-white">
-                      <Image 
-                        src={project.image} 
-                        alt={project.title} 
-                        fill 
-                        className="object-cover transition-transform duration-1000 group-hover:scale-105" 
-                      />
-                      <div className="absolute inset-0 bg-[#4E342E]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                    </div>
-                  </div>
-
-                  {/* Project Content */}
-                  <div className={`w-full lg:w-[45%] project-content-container flex flex-col ${isEven ? 'items-start text-left' : 'items-start lg:items-end lg:text-right'} relative z-10 bg-[#FDFBF9]/80 backdrop-blur-sm p-6 rounded-3xl`}>
-                    <span className="text-[10px] font-black text-[#8D6E63] tracking-[0.5em] uppercase mb-4 md:mb-6">0{index + 1}</span>
-                    <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic mb-6 leading-none font-serif text-[#4E342E]">{project.title}</h3>
-                    <p className="text-[#8D6E63] text-lg leading-relaxed mb-10 font-medium max-w-md">
-                      {project.description}
-                    </p>
-                    <div className={`flex flex-wrap ${isEven ? 'justify-start' : 'lg:justify-end'} gap-2 mb-10`}>
-                      {project.tags.map((tag, tIndex) => (
-                        <span key={tIndex} className="project-tag text-[8px] md:text-[9px] font-bold tracking-[0.2em] uppercase px-4 py-2 bg-white text-[#4E342E] border border-[#8D6E63]/10 rounded-full shadow-sm">
-                          {tag}
+            <div className="space-y-32 md:space-y-64 overflow-hidden">
+              {projects.map((project, index) => {
+                const isEven = index % 2 === 0;
+                // Create a repeating string of tags for the marquee
+                const marqueeText = [...project.tags, ...project.tags, ...project.tags, ...project.tags].join("  •  ");
+                
+                return (
+                  <div 
+                    key={index} 
+                    data-project-index={index}
+                    className={`project-card-container group relative flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-24 items-center reveal w-full py-10`}
+                  >
+                    {/* The Infinite Marquee Background */}
+                    <div className="absolute top-1/2 -translate-y-1/2 w-[200vw] -left-[50vw] overflow-hidden opacity-10 pointer-events-none z-0">
+                      <div className="flex whitespace-nowrap animate-marquee">
+                        <span className="text-[12vw] md:text-[8vw] font-black uppercase italic font-serif text-[#4E342E] tracking-tighter px-10">
+                          {marqueeText}
                         </span>
-                      ))}
-                    </div>
-                    <a href={project.links.live} className="flex items-center gap-4 group/btn">
-                      <span className="text-[10px] font-black tracking-[0.4em] uppercase group-hover/btn:text-[#8D6E63] transition-colors">View Project</span>
-                      <div className="w-12 h-12 flex items-center justify-center rounded-full border border-[#8D6E63]/20 bg-white group-hover/btn:bg-[#8D6E63] group-hover/btn:border-[#8D6E63] transition-all duration-500 shadow-sm">
-                        <svg className={`w-4 h-4 text-[#4E342E] group-hover/btn:text-white transition-colors ${!isEven ? 'lg:rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
+                        <span className="text-[12vw] md:text-[8vw] font-black uppercase italic font-serif text-[#4E342E] tracking-tighter px-10">
+                          {marqueeText}
+                        </span>
                       </div>
-                    </a>
+                    </div>
+
+                    {/* Project Image Area */}
+                    <div className="w-full lg:w-[55%] project-image-container relative z-10">
+                      <div className="relative aspect-[16/10] md:aspect-[16/9] rounded-[2.5rem] md:rounded-[4rem] overflow-hidden soft-shadow border border-[#8D6E63]/10 bg-white">
+                        <Image 
+                          src={project.image} 
+                          alt={project.title} 
+                          fill 
+                          className="object-cover transition-transform duration-1000 group-hover:scale-105" 
+                        />
+                        <div className="absolute inset-0 bg-[#4E342E]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                      </div>
+                    </div>
+
+                    {/* Project Content */}
+                    <div className={`w-full lg:w-[45%] project-content-container flex flex-col ${isEven ? 'items-start text-left' : 'items-start lg:items-end lg:text-right'} relative z-10 bg-[#FDFBF9]/80 backdrop-blur-sm p-8 md:p-12 rounded-[2.5rem] border border-[#8D6E63]/10 shadow-2xl`}>
+                      <span className="text-[10px] font-black text-[#8D6E63] tracking-[0.5em] uppercase mb-4 md:mb-6">0{index + 1}</span>
+                      <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic mb-6 leading-none font-serif text-[#4E342E]">{project.title}</h3>
+                      <p className="text-[#8D6E63] text-lg leading-relaxed mb-10 font-medium max-w-md">
+                        {project.description}
+                      </p>
+                      <div className={`flex flex-wrap ${isEven ? 'justify-start' : 'lg:justify-end'} gap-2 mb-10`}>
+                        {project.tags.map((tag, tIndex) => (
+                          <span key={tIndex} className="project-tag text-[8px] md:text-[9px] font-bold tracking-[0.2em] uppercase px-4 py-2 bg-white text-[#4E342E] border border-[#8D6E63]/10 rounded-full shadow-sm">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <a href={project.links.live} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group/btn">
+                        <span className="text-[10px] font-black tracking-[0.4em] uppercase group-hover/btn:text-[#8D6E63] transition-colors">View Project</span>
+                        <div className="w-12 h-12 flex items-center justify-center rounded-full border border-[#8D6E63]/20 bg-white group-hover/btn:bg-[#8D6E63] group-hover/btn:border-[#8D6E63] transition-all duration-500 shadow-sm">
+                          <svg className={`w-4 h-4 text-[#4E342E] group-hover/btn:text-white transition-colors ${!isEven ? 'lg:rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          </svg>
+                        </div>
+                      </a>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </section>
 
@@ -1242,62 +1157,67 @@ export default function Home() {
         </section>
 
         {/* CONTACT: Aesthetic Refinement */}
-        <section id="contact" className="pb-16 md:pb-32 mb-16 md:mb-32 relative z-10 reveal">
-          <div className="soft-card bg-[#4E342E] text-white overflow-hidden p-8 md:p-24 shadow-[0_50px_100px_-30px_rgba(78,52,46,0.4)] relative">
-            <div className="relative z-20 flex flex-col lg:flex-row justify-between items-center gap-16 lg:gap-32">
-              <div className="lg:w-1/2 w-full text-center lg:text-left">
-                <span className="text-[#8D6E63] text-[10px] font-black tracking-[0.6em] uppercase mb-8 md:mb-10 block">Initiate Collaboration</span>
-                <h2 className="text-5xl md:text-8xl lg:text-[100px] font-black tracking-tighter uppercase italic leading-none mb-10 md:mb-12 font-serif">Start a <br className="hidden md:block" /> Conversation.</h2>
-                
-                <div className="space-y-12 md:space-y-16">
-                  <div className="group">
-                    <p className="text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">Email Address</p>
-                    <a href="mailto:kercsondidal@gmail.com" className="text-xl md:text-4xl font-bold hover:text-[#8D6E63] transition-all duration-500 block underline underline-offset-[12px] decoration-white/10 group-hover:decoration-[#8D6E63]/40 break-all">
-                      kercsondidal@gmail.com
-                    </a>
-                  </div>
+        <section id="contact" className="py-24 md:py-48 relative z-10 reveal">
+          <div className="max-w-[1400px] mx-auto px-6 md:px-16">
+            <div className="reveal soft-card bg-[#4E342E] text-white overflow-hidden p-8 md:p-24 shadow-[0_50px_100px_-30px_rgba(78,52,46,0.4)] relative rounded-[3rem] md:rounded-[5rem]">
+            <div className="relative z-20 flex flex-col lg:flex-row justify-between items-center gap-12 lg:gap-16">
+                {/* Text Side - Balanced for wider form */}
+                <div className="w-full lg:w-[45%] text-center lg:text-left">
+                  <span className="text-[#8D6E63] text-[10px] font-black tracking-[0.6em] uppercase mb-6 md:mb-8 block">Initiate Collaboration</span>
+                  <h2 className="text-4xl md:text-7xl lg:text-[72px] font-black uppercase italic leading-[1.1] mb-8 md:mb-10 font-serif tracking-normal text-white">
+                    Start a Conversation.
+                  </h2>
                   
-                  <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-10 sm:gap-24">
-                    <div>
-                      <p className="text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">Location</p>
-                      <p className="text-xs md:text-base font-bold tracking-widest uppercase opacity-80">Mandaue City, Cebu, PH</p>
+                  <div className="space-y-12 md:space-y-16">
+                    <div className="group">
+                      <p className="text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">Email Address</p>
+                      <a href="mailto:kercsondidal@gmail.com" className="text-xl md:text-4xl font-bold hover:text-[#8D6E63] transition-all duration-500 block underline underline-offset-[12px] decoration-white/10 group-hover:decoration-[#8D6E63]/40 break-all">
+                        kercsondidal@gmail.com
+                      </a>
                     </div>
-                    <div>
-                      <p className="text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">Social</p>
-                      <div className="flex justify-center lg:justify-start gap-8 text-white/40 text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase">
-                        <a href="#" className="hover:text-white transition-colors">Github</a>
-                        <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+                    
+                    <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-10 sm:gap-24">
+                      <div>
+                        <p className="text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">Location</p>
+                        <p className="text-xs md:text-base font-bold tracking-widest uppercase opacity-80">Mandaue City, Cebu, PH</p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">Social</p>
+                        <div className="flex justify-center lg:justify-start gap-8 text-white/40 text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase">
+                          <a href="#" className="hover:text-white transition-colors">Github</a>
+                          <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Refined Form Card - High Z-Index to prevent overlap */}
-              <div className="lg:w-[45%] w-full bg-white/5 backdrop-blur-xl rounded-[2rem] md:rounded-[3.5rem] p-8 md:p-16 border border-white/10 shadow-2xl relative z-30">
-                <form className="space-y-10 md:space-y-12">
-                  <div className="space-y-4">
-                    <label className="text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase text-[#8D6E63] opacity-80">Your Identity</label>
-                    <input type="text" placeholder="Full Name" className="w-full bg-transparent border-b border-white/20 py-3 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors text-white placeholder-white/20 text-base md:text-lg" />
-                  </div>
-                  <div className="space-y-4">
-                    <label className="text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase text-[#8D6E63] opacity-80">Your Inbox</label>
-                    <input type="email" placeholder="email@example.com" className="w-full bg-transparent border-b border-white/20 py-3 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors text-white placeholder-white/20 text-base md:text-lg" />
-                  </div>
-                  <div className="space-y-4">
-                    <label className="text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase text-[#8D6E63] opacity-80">The Brief</label>
-                    <textarea placeholder="Tell me about your project" className="w-full bg-transparent border-b border-white/20 py-3 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors h-24 md:h-32 resize-none text-white placeholder-white/20 text-base md:text-lg" />
-                  </div>
-                  <button type="submit" className="w-full py-5 md:py-7 bg-white text-[#4E342E] text-[10px] md:text-[11px] font-black tracking-[0.6em] uppercase rounded-full hover:bg-[#8D6E63] hover:text-white transition-all duration-700 shadow-2xl active:scale-95">
-                    Send Inquiry
-                  </button>
-                </form>
+                {/* Refined Form Card - Now wider and more substantial */}
+                <div className="w-full lg:w-[52%] bg-white/5 backdrop-blur-xl rounded-[2rem] md:rounded-[3.5rem] p-8 md:p-16 border border-white/10 shadow-2xl relative z-30">
+                  <form className="space-y-10 md:space-y-12">
+                    <div className="space-y-4">
+                      <label className="text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase text-[#8D6E63] opacity-80">Your Identity</label>
+                      <input type="text" placeholder="Full Name" className="w-full bg-transparent border-b border-white/20 py-3 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors text-white placeholder-white/20 text-base md:text-lg" />
+                    </div>
+                    <div className="space-y-4">
+                      <label className="text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase text-[#8D6E63] opacity-80">Your Inbox</label>
+                      <input type="email" placeholder="email@example.com" className="w-full bg-transparent border-b border-white/20 py-3 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors text-white placeholder-white/20 text-base md:text-lg" />
+                    </div>
+                    <div className="space-y-4">
+                      <label className="text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase text-[#8D6E63] opacity-80">The Brief</label>
+                      <textarea placeholder="Tell me about your project" className="w-full bg-transparent border-b border-white/20 py-3 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors h-24 md:h-32 resize-none text-white placeholder-white/20 text-base md:text-lg" />
+                    </div>
+                    <button type="submit" className="w-full py-5 md:py-7 bg-white text-[#4E342E] text-[10px] md:text-[11px] font-black tracking-[0.6em] uppercase rounded-full hover:bg-[#8D6E63] hover:text-white transition-all duration-700 shadow-2xl active:scale-95">
+                      Send Inquiry
+                    </button>
+                  </form>
+                </div>
               </div>
+              
+              {/* Background Accents - Moved further away to prevent visual clutter */}
+              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2 pointer-events-none z-0" />
+              <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#8D6E63]/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none z-0" />
             </div>
-            
-            {/* Background Accents - Moved further away to prevent visual clutter */}
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2 pointer-events-none z-0" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#8D6E63]/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none z-0" />
           </div>
         </section>
 
