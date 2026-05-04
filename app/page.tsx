@@ -498,6 +498,28 @@ export default function Home() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [activeQuote, setActiveQuote] = useState("");
   const [expandedExpertise, setExpandedExpertise] = useState<number | null>(null);
+  const expertiseRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Update raw mouse positions for custom cursor
+      document.documentElement.style.setProperty('--mouse-x-raw', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y-raw', `${e.clientY}px`);
+
+      if (!expertiseRef.current) return;
+      const cards = expertiseRef.current.querySelectorAll('.group');
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        (card as HTMLElement).style.setProperty('--mouse-x', `${x}%`);
+        (card as HTMLElement).style.setProperty('--mouse-y', `${y}%`);
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   const mainRef = useRef<HTMLDivElement>(null);
   const heroSectionRef = useRef<HTMLElement>(null);
@@ -941,45 +963,82 @@ export default function Home() {
           </div>
         </section>
 
-        {/* EXPERTISE: Sleek Accordion */}
-        <section id="expertise" className="py-24 md:py-48 border-t border-[#8D6E63]/10 reveal">
-          <div className="mb-16 md:mb-24 px-4 md:px-8 max-w-[1400px] mx-auto">
+        {/* EXPERTISE: Editorial Kinetic Reveal */}
+        <section id="expertise" className="py-24 md:py-48 border-t border-[#8D6E63]/10 bg-[#FDFBF9] overflow-hidden">
+          <div className="px-4 md:px-8 max-w-[1400px] mx-auto mb-16 md:mb-32">
             <span className="section-title reveal">Proficiency</span>
             <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic leading-none font-serif reveal">Expertise.</h2>
           </div>
 
-          <div className="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col">
+          <div className="flex flex-col">
             {skills.map((skill, index) => (
               <div 
-                key={index} 
-                onClick={() => setExpandedExpertise(expandedExpertise === index ? null : index)}
-                className={`group border-b border-[#8D6E63]/20 flex flex-col py-8 cursor-pointer reveal transition-all duration-500 px-4 md:px-6 rounded-2xl ${expandedExpertise === index ? 'bg-[#8D6E63]/5 shadow-sm' : 'hover:bg-[#8D6E63]/5'}`}
+                key={index}
+                onMouseEnter={() => setExpandedExpertise(index)}
+                onMouseLeave={() => setExpandedExpertise(null)}
+                className="group relative py-10 md:py-16 border-b border-[#8D6E63]/5 cursor-none"
               >
-                <div className="flex justify-between items-center w-full">
-                  <h3 className={`text-3xl md:text-6xl font-black tracking-tighter uppercase italic font-serif transition-colors duration-500 ${expandedExpertise === index ? 'text-[#8D6E63]' : 'text-[#4E342E] group-hover:text-[#8D6E63]'}`}>
-                    <span className="text-[14px] md:text-[20px] mr-4 md:mr-10 opacity-40 font-sans not-italic tracking-[0.2em]">0{index + 1}</span>
-                    {skill.category}
-                  </h3>
-                  <div className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full transition-all duration-500 shadow-sm ${expandedExpertise === index ? 'bg-[#8D6E63] text-white rotate-180' : 'bg-[#F2EBE4] text-[#8D6E63]'}`}>
-                    {expandedExpertise === index ? <i className="fas fa-chevron-up"></i> : skill.items[0].icon}
-                  </div>
-                </div>
-                
+                {/* Parallax Moving Background Text */}
                 <div 
-                  className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${expandedExpertise === index ? 'max-h-[800px] opacity-100 mt-10' : 'max-h-0 opacity-0 mt-0'}`}
+                  className={`absolute inset-0 flex items-center whitespace-nowrap opacity-[0.03] pointer-events-none transition-transform duration-1000 ease-out`}
+                  style={{ 
+                    transform: `translateX(${(index % 2 === 0 ? 1 : -1) * (expandedExpertise === index ? 10 : 0)}%)` 
+                  }}
                 >
-                  <div className="flex flex-col lg:flex-row justify-between lg:items-end gap-8 border-t border-[#8D6E63]/10 pt-8">
-                    <p className="text-lg md:text-xl font-medium text-[#4E342E]/70 max-w-2xl leading-relaxed">
-                      {skill.description}
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                      {skill.items.map((item, iIndex) => (
-                        <span key={iIndex} className="text-[10px] md:text-[11px] font-bold text-[#4E342E] bg-white border border-[#8D6E63]/20 px-4 py-2 rounded-xl shadow-sm">
-                          {item.name}
-                        </span>
-                      ))}
+                  <span className="text-[15vh] md:text-[25vh] font-black uppercase italic font-serif">
+                    {skill.category} {skill.category} {skill.category}
+                  </span>
+                </div>
+
+                <div className="relative z-10 px-4 md:px-8 max-w-[1400px] mx-auto flex flex-col items-start">
+                  <div className="flex items-baseline gap-6 md:gap-12 group-hover:translate-x-6 md:group-hover:translate-x-12 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]">
+                    <span className="text-sm md:text-xl font-sans opacity-30 font-bold tracking-widest">0{index + 1}</span>
+                    <h3 className="text-5xl md:text-[10rem] font-black tracking-tighter uppercase italic font-serif leading-none transition-all duration-700 group-hover:text-[#8D6E63] group-hover:tracking-widest">
+                      {skill.category}.
+                    </h3>
+                  </div>
+
+                  {/* The Ghost Reveal: Skills & Description */}
+                  <div 
+                    className={`mt-10 md:mt-16 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                      expandedExpertise === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
+                    }`}
+                  >
+                    <div className="flex flex-col md:flex-row md:items-center gap-10 md:gap-24 ml-10 md:ml-32">
+                      <p className="text-xl md:text-3xl font-medium text-[#4E342E]/70 max-w-xl leading-tight italic font-serif">
+                        {skill.description}
+                      </p>
+                      
+                      <div className="flex flex-wrap gap-4 md:gap-6">
+                        {skill.items.map((item, iIndex) => (
+                          <div 
+                            key={iIndex}
+                            className="flex items-center gap-3 animate-ripple-in"
+                            style={{ animationDelay: `${iIndex * 100}ms` }}
+                          >
+                            <span className="text-[#8D6E63] text-2xl md:text-3xl">
+                              {item.icon}
+                            </span>
+                            <span className="text-sm md:text-base font-black uppercase tracking-[0.2em] text-[#4E342E]">
+                              {item.name}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
+                </div>
+
+                {/* Interactive Custom Cursor Follower for this section */}
+                <div 
+                  className={`fixed w-32 h-32 rounded-full border border-[#8D6E63]/20 pointer-events-none z-50 transition-opacity duration-300 flex items-center justify-center ${expandedExpertise === index ? 'opacity-100' : 'opacity-0'}`}
+                  style={{ 
+                    left: 'var(--mouse-x-raw)', 
+                    top: 'var(--mouse-y-raw)',
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                >
+                  <span className="text-[10px] font-black tracking-widest text-[#8D6E63] uppercase">View</span>
                 </div>
               </div>
             ))}
@@ -1051,73 +1110,81 @@ export default function Home() {
           </div>
         </section>
 
-        {/* WORK: Infinite Marquee Background */}
-        <section id="work" ref={projectsSectionRef} className="py-24 md:py-48 border-t border-[#8D6E63]/10 reveal">
+        {/* WORK: Full-Bleed Cinematic Stage */}
+        <section id="work" ref={projectsSectionRef} className="py-24 md:py-48 border-t border-[#8D6E63]/10 bg-[#FDFBF9]">
           <div className="max-w-[1400px] mx-auto px-6 md:px-16">
-            <div className="mb-16 md:mb-24 flex flex-col items-start px-4 md:px-0">
+            <div className="mb-24 md:mb-48 flex flex-col items-center text-center">
               <span className="section-title reveal text-[#8D6E63]">Selected Works</span>
-              <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic leading-none font-serif reveal text-[#4E342E]">Projects.</h2>
+              <h2 className="text-6xl md:text-[12vw] font-black tracking-tighter uppercase italic leading-none font-serif reveal text-[#4E342E]">Projects.</h2>
             </div>
 
-            <div className="space-y-32 md:space-y-64 overflow-hidden">
+            <div className="space-y-48 md:space-y-96">
               {projects.map((project, index) => {
                 const isEven = index % 2 === 0;
-                // Create a repeating string of tags for the marquee
-                const marqueeText = [...project.tags, ...project.tags, ...project.tags, ...project.tags].join("  •  ");
-                
+
                 return (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     data-project-index={index}
-                    className={`project-card-container group relative flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-24 items-center reveal w-full py-10`}
+                    className="project-card-container group relative flex flex-col items-center reveal min-h-[60vh] md:min-h-screen justify-center"
                   >
-                    {/* The Infinite Marquee Background */}
-                    <div className="absolute top-1/2 -translate-y-1/2 w-[200vw] -left-[50vw] overflow-hidden opacity-10 pointer-events-none z-0">
-                      <div className="flex whitespace-nowrap animate-marquee">
-                        <span className="text-[12vw] md:text-[8vw] font-black uppercase italic font-serif text-[#4E342E] tracking-tighter px-10">
-                          {marqueeText}
-                        </span>
-                        <span className="text-[12vw] md:text-[8vw] font-black uppercase italic font-serif text-[#4E342E] tracking-tighter px-10">
-                          {marqueeText}
-                        </span>
-                      </div>
+                    {/* Massive Background Project Title (Parallax) */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none z-0 opacity-[0.03] transition-transform duration-1000 group-hover:scale-110">
+                      <span className="text-[20vw] font-black uppercase italic font-serif leading-none block">
+                        {project.title.split(" ")[0]}
+                      </span>
                     </div>
 
-                    {/* Project Image Area */}
-                    <div className="w-full lg:w-[55%] project-image-container relative z-10">
-                      <div className="relative aspect-[16/10] md:aspect-[16/9] rounded-[2.5rem] md:rounded-[4rem] overflow-hidden soft-shadow border border-[#8D6E63]/10 bg-white">
-                        <Image 
-                          src={project.image} 
-                          alt={project.title} 
-                          fill 
-                          className="object-cover transition-transform duration-1000 group-hover:scale-105" 
+                    <div className="relative z-10 w-full flex flex-col items-center">
+                      {/* Project Image: Cinematic Reveal */}
+                      <div className="relative w-full max-w-[1100px] aspect-[16/10] md:aspect-[16/9] rounded-[2.5rem] md:rounded-[4rem] overflow-hidden soft-shadow border border-[#8D6E63]/10 bg-white cursor-none group/img">
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          className="object-cover transition-transform duration-1000 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-[#4E342E]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                      </div>
-                    </div>
-
-                    {/* Project Content */}
-                    <div className={`w-full lg:w-[45%] project-content-container flex flex-col ${isEven ? 'items-start text-left' : 'items-start lg:items-end lg:text-right'} relative z-10 bg-[#FDFBF9]/80 backdrop-blur-sm p-8 md:p-12 rounded-[2.5rem] border border-[#8D6E63]/10 shadow-2xl`}>
-                      <span className="text-[10px] font-black text-[#8D6E63] tracking-[0.5em] uppercase mb-4 md:mb-6">0{index + 1}</span>
-                      <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic mb-6 leading-none font-serif text-[#4E342E]">{project.title}</h3>
-                      <p className="text-[#8D6E63] text-lg leading-relaxed mb-10 font-medium max-w-md">
-                        {project.description}
-                      </p>
-                      <div className={`flex flex-wrap ${isEven ? 'justify-start' : 'lg:justify-end'} gap-2 mb-10`}>
-                        {project.tags.map((tag, tIndex) => (
-                          <span key={tIndex} className="project-tag text-[8px] md:text-[9px] font-bold tracking-[0.2em] uppercase px-4 py-2 bg-white text-[#4E342E] border border-[#8D6E63]/10 rounded-full shadow-sm">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      <a href={project.links.live} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group/btn">
-                        <span className="text-[10px] font-black tracking-[0.4em] uppercase group-hover/btn:text-[#8D6E63] transition-colors">View Project</span>
-                        <div className="w-12 h-12 flex items-center justify-center rounded-full border border-[#8D6E63]/20 bg-white group-hover/btn:bg-[#8D6E63] group-hover/btn:border-[#8D6E63] transition-all duration-500 shadow-sm">
-                          <svg className={`w-4 h-4 text-[#4E342E] group-hover/btn:text-white transition-colors ${!isEven ? 'lg:rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                          </svg>
+                        <div className="absolute inset-0 bg-[#4E342E]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-center justify-center">
+                          <div className="w-32 h-32 rounded-full border border-white/40 backdrop-blur-md flex items-center justify-center scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700">
+                            <span className="text-white text-[10px] font-black tracking-[0.4em] uppercase">Explore</span>
+                          </div>
                         </div>
-                      </a>
+                      </div>
+
+                      {/* Project Details: Editorial Drift */}
+                      <div className={`mt-12 md:mt-20 w-full max-w-4xl flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-start md:items-end justify-between gap-8 md:gap-16`}>
+                        <div className="flex flex-col items-start space-y-4 md:space-y-6">
+                          <span className="text-[12px] md:text-[14px] font-black text-[#8D6E63] tracking-[0.5em] uppercase">0{index + 1}</span>
+                          <h3 className="text-4xl md:text-7xl font-black tracking-tighter uppercase italic leading-none font-serif text-[#4E342E] group-hover:text-[#8D6E63] transition-colors duration-500">
+                            {project.title}
+                          </h3>
+                        </div>
+                        
+                        <div className={`flex flex-col ${isEven ? 'items-start' : 'items-start md:items-end'} max-w-md`}>
+                          <p className={`text-[#8D6E63] text-lg md:text-xl leading-relaxed mb-8 font-medium ${!isEven && 'md:text-right'}`}>
+                            {project.description}
+                          </p>
+                          <div className="flex flex-wrap gap-3">
+                            {project.tags.map((tag, tIndex) => (
+                              <span key={tIndex} className="text-[10px] font-black uppercase tracking-widest text-[#4E342E]/40 border-b border-[#8D6E63]/20 pb-1">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* View Links */}
+                      <div className="mt-12 flex gap-8">
+                        <a href={project.links.live} target="_blank" rel="noopener noreferrer" className="group/link flex items-center gap-3">
+                          <span className="text-[10px] font-black tracking-[0.4em] uppercase text-[#4E342E]">Live Experience</span>
+                          <div className="w-8 h-[1px] bg-[#8D6E63] group-hover/link:w-16 transition-all duration-700" />
+                        </a>
+                        <a href={project.links.github} target="_blank" rel="noopener noreferrer" className="group/link flex items-center gap-3">
+                          <span className="text-[10px] font-black tracking-[0.4em] uppercase text-[#4E342E]">Source Code</span>
+                          <div className="w-8 h-[1px] bg-[#8D6E63] group-hover/link:w-16 transition-all duration-700" />
+                        </a>
+                      </div>
                     </div>
                   </div>
                 );
@@ -1157,33 +1224,33 @@ export default function Home() {
         </section>
 
         {/* CONTACT: Aesthetic Refinement */}
-        <section id="contact" className="py-24 md:py-48 relative z-10 reveal">
-          <div className="max-w-[1400px] mx-auto px-6 md:px-16">
-            <div className="reveal soft-card bg-[#4E342E] text-white overflow-hidden p-8 md:p-24 shadow-[0_50px_100px_-30px_rgba(78,52,46,0.4)] relative rounded-[3rem] md:rounded-[5rem]">
-            <div className="relative z-20 flex flex-col lg:flex-row justify-between items-center gap-12 lg:gap-16">
-                {/* Text Side - Balanced for wider form */}
+        <section id="contact" className="py-12 md:py-48 relative z-10 reveal">
+          <div className="max-w-[1400px] mx-auto px-4 md:px-16">
+            <div className="reveal soft-card bg-[#4E342E] text-white overflow-hidden p-6 md:p-24 shadow-[0_50px_100px_-30px_rgba(78,52,46,0.4)] relative rounded-[2.5rem] md:rounded-[5rem]">
+              <div className="relative z-20 flex flex-col lg:flex-row justify-between items-center gap-10 lg:gap-16">
+                {/* Text Side - Compact for mobile */}
                 <div className="w-full lg:w-[45%] text-center lg:text-left">
-                  <span className="text-[#8D6E63] text-[10px] font-black tracking-[0.6em] uppercase mb-6 md:mb-8 block">Initiate Collaboration</span>
-                  <h2 className="text-4xl md:text-7xl lg:text-[72px] font-black uppercase italic leading-[1.1] mb-8 md:mb-10 font-serif tracking-normal text-white">
+                  <span className="text-[#8D6E63] text-[9px] md:text-[10px] font-black tracking-[0.6em] uppercase mb-4 md:mb-10 block">Initiate Collaboration</span>
+                  <h2 className="text-4xl md:text-7xl lg:text-[72px] font-black uppercase italic leading-[1.1] mb-6 md:mb-10 font-serif tracking-normal text-white">
                     Start a Conversation.
                   </h2>
-                  
-                  <div className="space-y-12 md:space-y-16">
+
+                  <div className="space-y-8 md:space-y-16 mb-12 lg:mb-0">
                     <div className="group">
-                      <p className="text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">Email Address</p>
-                      <a href="mailto:kercsondidal@gmail.com" className="text-xl md:text-4xl font-bold hover:text-[#8D6E63] transition-all duration-500 block underline underline-offset-[12px] decoration-white/10 group-hover:decoration-[#8D6E63]/40 break-all">
+                      <p className="text-[8px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-2 md:mb-4">Email Address</p>
+                      <a href="mailto:kercsondidal@gmail.com" className="text-lg md:text-4xl font-bold hover:text-[#8D6E63] transition-all duration-500 block underline underline-offset-[8px] md:underline-offset-[12px] decoration-white/10 group-hover:decoration-[#8D6E63]/40 break-all">
                         kercsondidal@gmail.com
                       </a>
                     </div>
-                    
-                    <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-10 sm:gap-24">
+
+                    <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-8 sm:gap-24">
                       <div>
-                        <p className="text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">Location</p>
+                        <p className="text-[8px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-2 md:mb-4">Location</p>
                         <p className="text-xs md:text-base font-bold tracking-widest uppercase opacity-80">Mandaue City, Cebu, PH</p>
                       </div>
                       <div>
-                        <p className="text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-4">Social</p>
-                        <div className="flex justify-center lg:justify-start gap-8 text-white/40 text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase">
+                        <p className="text-[8px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-2 md:mb-4">Social</p>
+                        <div className="flex justify-center lg:justify-start gap-6 md:gap-8 text-white/40 text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase">
                           <a href="#" className="hover:text-white transition-colors">Github</a>
                           <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
                         </div>
@@ -1192,28 +1259,27 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Refined Form Card - Now wider and more substantial */}
-                <div className="w-full lg:w-[52%] bg-white/5 backdrop-blur-xl rounded-[2rem] md:rounded-[3.5rem] p-8 md:p-16 border border-white/10 shadow-2xl relative z-30">
-                  <form className="space-y-10 md:space-y-12">
-                    <div className="space-y-4">
+                {/* Refined Form Card - Tighter padding for mobile */}
+                <div className="w-full lg:w-[52%] bg-white/5 backdrop-blur-xl rounded-[2rem] md:rounded-[3.5rem] p-6 md:p-16 border border-white/10 shadow-2xl relative z-30">
+                  <form className="space-y-8 md:space-y-12">
+                    <div className="space-y-3 md:space-y-4">
                       <label className="text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase text-[#8D6E63] opacity-80">Your Identity</label>
-                      <input type="text" placeholder="Full Name" className="w-full bg-transparent border-b border-white/20 py-3 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors text-white placeholder-white/20 text-base md:text-lg" />
+                      <input type="text" placeholder="Full Name" className="w-full bg-transparent border-b border-white/20 py-2 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors text-white placeholder-white/20 text-base md:text-lg" />
                     </div>
-                    <div className="space-y-4">
+                    <div className="space-y-3 md:space-y-4">
                       <label className="text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase text-[#8D6E63] opacity-80">Your Inbox</label>
-                      <input type="email" placeholder="email@example.com" className="w-full bg-transparent border-b border-white/20 py-3 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors text-white placeholder-white/20 text-base md:text-lg" />
+                      <input type="email" placeholder="email@example.com" className="w-full bg-transparent border-b border-white/20 py-2 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors text-white placeholder-white/20 text-base md:text-lg" />
                     </div>
-                    <div className="space-y-4">
+                    <div className="space-y-3 md:space-y-4">
                       <label className="text-[8px] md:text-[9px] font-black tracking-[0.5em] uppercase text-[#8D6E63] opacity-80">The Brief</label>
-                      <textarea placeholder="Tell me about your project" className="w-full bg-transparent border-b border-white/20 py-3 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors h-24 md:h-32 resize-none text-white placeholder-white/20 text-base md:text-lg" />
+                      <textarea placeholder="Tell me about your project" className="w-full bg-transparent border-b border-white/20 py-2 md:py-4 focus:outline-none focus:border-[#8D6E63] transition-colors h-24 md:h-32 resize-none text-white placeholder-white/20 text-base md:text-lg" />
                     </div>
-                    <button type="submit" className="w-full py-5 md:py-7 bg-white text-[#4E342E] text-[10px] md:text-[11px] font-black tracking-[0.6em] uppercase rounded-full hover:bg-[#8D6E63] hover:text-white transition-all duration-700 shadow-2xl active:scale-95">
+                    <button type="submit" className="w-full py-4 md:py-7 bg-white text-[#4E342E] text-[10px] md:text-[11px] font-black tracking-[0.6em] uppercase rounded-full hover:bg-[#8D6E63] hover:text-white transition-all duration-700 shadow-2xl active:scale-95">
                       Send Inquiry
                     </button>
                   </form>
                 </div>
-              </div>
-              
+              </div>              
               {/* Background Accents - Moved further away to prevent visual clutter */}
               <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2 pointer-events-none z-0" />
               <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#8D6E63]/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none z-0" />
