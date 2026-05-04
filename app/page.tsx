@@ -494,11 +494,20 @@ function GrooveBox() {
 
 export default function Home() {
   const [navScrolled, setNavScrolled] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [activeQuote, setActiveQuote] = useState("");
   const [expandedExpertise, setExpandedExpertise] = useState<number | null>(null);
   const expertiseRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isSidebarOpen]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -572,6 +581,8 @@ export default function Home() {
     }, "-=1.2");
 
     // Hide loader with a premium "Bloom & Scale" exit
+    const loaderTimeout = (typeof window !== "undefined" && window.innerWidth < 768) ? 2500 : 3500;
+    
     const timer = setTimeout(() => {
       if (loaderRef.current) {
         const tl = gsap.timeline({
@@ -603,7 +614,7 @@ export default function Home() {
       } else {
         setIsLoading(false);
       }
-    }, 3500);
+    }, loaderTimeout);
 
     const handleScroll = () => {
       setNavScrolled(window.scrollY > 50);
@@ -639,15 +650,15 @@ export default function Home() {
           ease: "power3.out"
         }, "-=1");
 
-        // Subtle Hero Parallax - All Devices (Reduced on mobile)
+        // Subtle Hero Parallax - All Devices (Increased scrub for fluidity)
         gsap.to(".hero-floating-element", {
-          y: (i, target) => (typeof window !== "undefined" && window.innerWidth < 768) ? -15 : -30,
+          y: (i, target) => (typeof window !== "undefined" && window.innerWidth < 768) ? -20 : -30,
           ease: "none",
           scrollTrigger: {
             trigger: heroSectionRef.current,
             start: "top top",
             end: "bottom top",
-            scrub: 0.5
+            scrub: 1.5
           }
         });
       }
@@ -658,10 +669,11 @@ export default function Home() {
         const elements = document.querySelectorAll(`${id} .reveal`);
         if (elements.length > 0) {
           gsap.fromTo(elements, 
-            { opacity: 0 },
+            { opacity: 0, y: 20 }, // Added subtle y-drift
             {
               opacity: 1,
-              duration: 1,
+              y: 0,
+              duration: 1.2, // Slightly longer for elegance
               stagger: 0.15,
               ease: "power2.out",
               scrollTrigger: {
@@ -681,13 +693,13 @@ export default function Home() {
 
         // Parallax Backdrop
         gsap.to(backdrop, {
-          yPercent: 20,
+          yPercent: (typeof window !== "undefined" && window.innerWidth < 768) ? 15 : 20,
           ease: "none",
           scrollTrigger: {
             trigger: aboutSectionRef.current,
             start: "top bottom",
             end: "bottom top",
-            scrub: true
+            scrub: 2 // Smoother settle
           }
         });
 
@@ -896,22 +908,59 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Mobile Navigation (Floating Pill - Hidden on Desktop) */}
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-[400px] md:hidden">
-        <nav className="bg-[#4E342E]/90 backdrop-blur-xl border border-white/10 rounded-full px-6 py-4 flex justify-between items-center shadow-2xl shadow-black/20">
-          <a href="#about" className="text-white/60 hover:text-white transition-colors"><i className="fas fa-user text-lg"></i></a>
-          <a href="#education" className="text-white/60 hover:text-white transition-colors"><i className="fas fa-graduation-cap text-lg"></i></a>
-          <a href="#work" className="text-white/60 hover:text-white transition-colors"><i className="fas fa-briefcase text-lg"></i></a>
-          <a href="#uiux" className="text-white/60 hover:text-white transition-colors"><i className="fas fa-flask text-lg"></i></a>
-          <a href="#contact" className="text-white/60 hover:text-white transition-colors"><i className="fas fa-envelope text-lg"></i></a>
-        </nav>
+      {/* Mobile Sidebar & Toggle */}
+      <div className="md:hidden">
+        {/* Toggle Button */}
+        <button 
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="fixed top-8 right-6 z-[1000] flex flex-col gap-2 p-2 group"
+          aria-label="Toggle Menu"
+        >
+          <div className={`h-[1px] bg-[#4E342E] transition-all duration-500 ${isSidebarOpen ? 'w-8 rotate-45 translate-y-[4.5px]' : 'w-8'}`} />
+          <div className={`h-[1px] bg-[#4E342E] transition-all duration-500 ${isSidebarOpen ? 'w-8 -rotate-45 -translate-y-[4.5px]' : 'w-5'}`} />
+        </button>
+
+        {/* Sidebar Panel */}
+        <div className={`fixed inset-0 z-[900] transition-all duration-700 ${isSidebarOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+          {/* Backdrop */}
+          <div 
+            onClick={() => setIsSidebarOpen(false)}
+            className={`absolute inset-0 bg-[#FDFBF9]/80 backdrop-blur-md transition-opacity duration-700 ${isSidebarOpen ? 'opacity-100' : 'opacity-0'}`} 
+          />
+          
+          {/* Menu */}
+          <nav className={`absolute top-0 right-0 w-[80%] h-full bg-[#FDFBF9] border-l border-[#8D6E63]/10 p-12 flex flex-col justify-center transition-transform duration-700 ease-expo ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className="flex flex-col gap-8">
+              {['About', 'Education', 'Work', 'UI/UX', 'Contact'].map((item, i) => (
+                <a 
+                  key={item}
+                  href={`#${item.toLowerCase().replace('/', '')}`}
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="text-4xl font-serif font-black italic uppercase tracking-tighter text-[#4E342E] hover:text-[#8D6E63] transition-colors"
+                  style={{ 
+                    transitionDelay: `${i * 100}ms`,
+                    transform: isSidebarOpen ? 'translateY(0)' : 'translateY(20px)',
+                    opacity: isSidebarOpen ? 1 : 0
+                  }}
+                >
+                  {item}.
+                </a>
+              ))}
+            </div>
+            
+            <div className="mt-24 space-y-6">
+              <span className="text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] opacity-40">Get in touch</span>
+              <a href="mailto:kercsondidal@gmail.com" className="block text-sm font-bold text-[#4E342E] underline underline-offset-4">kercsondidal@gmail.com</a>
+            </div>
+          </nav>
+        </div>
       </div>
 
       <main className="max-w-[1400px] mx-auto px-6 md:px-16">
         
-        {/* HERO: Asymmetrical & Multi-layered */}
+        {/* HERO: Balanced & Multi-layered */}
         <section ref={heroSectionRef} className="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-16 lg:gap-20 pt-32 pb-20">
-          <div className="w-full lg:w-[55%] flex flex-col items-center lg:items-start text-center lg:text-left">
+          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
             <div className="hero-text-part">
               <span className="section-title">Aspiring Front-End Developer</span>
               <h1 className="text-4xl sm:text-7xl md:text-8xl lg:text-[110px] font-black leading-[0.9] tracking-tighter uppercase italic mb-8 font-serif">
@@ -937,7 +986,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-full max-w-md lg:max-w-none lg:w-[45%] relative hero-image-part">
+          <div className="w-full max-w-md lg:max-w-none lg:w-1/2 relative hero-image-part">
             <div className="relative w-full aspect-[4/5] soft-card overflow-hidden hero-floating-element z-20">
               <Image src="/profile.png" alt="Profile" fill className="object-cover scale-110" priority />
             </div>
@@ -1172,18 +1221,6 @@ export default function Home() {
                             ))}
                           </div>
                         </div>
-                      </div>
-
-                      {/* View Links */}
-                      <div className="mt-12 flex gap-8">
-                        <a href={project.links.live} target="_blank" rel="noopener noreferrer" className="group/link flex items-center gap-3">
-                          <span className="text-[10px] font-black tracking-[0.4em] uppercase text-[#4E342E]">Live Experience</span>
-                          <div className="w-8 h-[1px] bg-[#8D6E63] group-hover/link:w-16 transition-all duration-700" />
-                        </a>
-                        <a href={project.links.github} target="_blank" rel="noopener noreferrer" className="group/link flex items-center gap-3">
-                          <span className="text-[10px] font-black tracking-[0.4em] uppercase text-[#4E342E]">Source Code</span>
-                          <div className="w-8 h-[1px] bg-[#8D6E63] group-hover/link:w-16 transition-all duration-700" />
-                        </a>
                       </div>
                     </div>
                   </div>

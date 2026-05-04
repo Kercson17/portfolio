@@ -29,27 +29,28 @@ body {
 
 h1, h2, h3, h4, .font-serif {
   font-family: var(--font-cormorant), serif;
+  letter-spacing: -0.01em;
 }
 
 @layer components {
   .btn-primary {
-    @apply px-8 py-4 bg-[#4E342E] text-white text-[11px] font-black tracking-[0.4em] uppercase rounded-full transition-all duration-700 shadow-xl hover:bg-[#8D6E63] hover:shadow-[#8D6E63]/20 active:scale-95;
+    @apply px-10 py-5 bg-[#4E342E] text-white text-[10px] md:text-[11px] font-black tracking-[0.5em] uppercase rounded-full transition-all duration-700 shadow-xl hover:bg-[#8D6E63] hover:shadow-[#8D6E63]/20 active:scale-95;
   }
 
   .btn-outline {
-    @apply px-8 py-4 bg-white border border-[#8D6E63]/20 text-[#4E342E] text-[11px] font-black tracking-[0.4em] uppercase rounded-full hover:border-[#8D6E63] transition-all duration-700 active:scale-95;
+    @apply px-10 py-5 bg-white border border-[#8D6E63]/20 text-[#4E342E] text-[10px] md:text-[11px] font-black tracking-[0.5em] uppercase rounded-full hover:border-[#8D6E63] transition-all duration-700 active:scale-95;
   }
 
   .section-title {
-    @apply text-[10px] md:text-[11px] font-black tracking-[0.6em] uppercase text-[#8D6E63] mb-4 block;
+    @apply text-[9px] md:text-[11px] font-black tracking-[0.8em] uppercase text-[#8D6E63] mb-6 block;
   }
 
   .nav-item {
-    @apply text-[10px] md:text-[11px] font-black tracking-[0.3em] uppercase text-[#4E342E]/70 hover:text-[#4E342E] transition-all duration-500 relative py-2;
+    @apply text-[10px] md:text-[11px] font-black tracking-[0.4em] uppercase text-[#4E342E]/70 hover:text-[#4E342E] transition-all duration-500 relative py-2;
   }
 
   .nav-item::after {
-    @apply content-[''] absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#8D6E63] transition-all duration-500;
+    @apply content-[''] absolute bottom-0 left-0 w-0 h-[1px] bg-[#8D6E63] transition-all duration-500;
   }
 
   .nav-item:hover::after {
@@ -57,15 +58,15 @@ h1, h2, h3, h4, .font-serif {
   }
 
   .soft-card {
-    @apply bg-white border border-[#8D6E63]/10 rounded-[3rem] shadow-[0_20px_60px_-15px_rgba(141,110,99,0.08)] transition-all duration-700;
+    @apply bg-white border border-[#8D6E63]/5 rounded-[3.5rem] shadow-[0_30px_90px_-20px_rgba(141,110,99,0.06)] transition-all duration-700;
   }
 
   .soft-shadow {
-    @apply shadow-[0_30px_80px_-20px_rgba(141,110,99,0.12)];
+    @apply shadow-[0_40px_100px_-30px_rgba(141,110,99,0.1)];
   }
 
   .logo-mark {
-    @apply w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-[#4E342E] text-white font-black text-xl md:text-2xl rounded-[1.2rem] shadow-lg shadow-[#4E342E]/20;
+    @apply w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-[#4E342E] text-white font-black text-xl md:text-2xl rounded-full shadow-lg shadow-[#4E342E]/10;
   }
 
   .text-outline {
@@ -91,6 +92,10 @@ h1, h2, h3, h4, .font-serif {
   .inner-glow {
     box-shadow: inset 0 0 20px 0 rgba(255, 255, 255, 0.5);
   }
+}
+
+.ease-expo {
+  transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 /* Animations */
