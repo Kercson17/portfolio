@@ -910,15 +910,27 @@ export default function Home() {
 
       {/* Mobile Sidebar & Toggle */}
       <div className="md:hidden">
-        {/* Toggle Button */}
-        <button 
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="fixed top-8 right-6 z-[1000] flex flex-col gap-2 p-2 group"
-          aria-label="Toggle Menu"
-        >
-          <div className={`h-[1px] bg-[#4E342E] transition-all duration-500 ${isSidebarOpen ? 'w-8 rotate-45 translate-y-[4.5px]' : 'w-8'}`} />
-          <div className={`h-[1px] bg-[#4E342E] transition-all duration-500 ${isSidebarOpen ? 'w-8 -rotate-45 -translate-y-[4.5px]' : 'w-5'}`} />
-        </button>
+        {/* Mobile Header Bar */}
+        <div className={`fixed top-0 w-full z-[1000] transition-all duration-1000 ${navScrolled ? "bg-white/80 backdrop-blur-xl py-4 border-b border-[#8D6E63]/5" : "bg-transparent py-7"}`}>
+          <div className="px-6 flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 flex items-center justify-center bg-[#4E342E] text-white font-black text-lg rounded-full shadow-lg">K</div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black tracking-[0.2em] uppercase leading-none mb-1">Kercson Didal</span>
+                <span className="text-[7px] font-bold text-[#8D6E63] tracking-[0.1em] uppercase leading-none opacity-60">Portfolio / 2026</span>
+              </div>
+            </div>
+            
+            <button 
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="flex flex-col gap-2 p-2 group"
+              aria-label="Toggle Menu"
+            >
+              <div className={`h-[1px] bg-[#4E342E] transition-all duration-500 ${isSidebarOpen ? 'w-8 rotate-45 translate-y-[4.5px]' : 'w-8'}`} />
+              <div className={`h-[1px] bg-[#4E342E] transition-all duration-500 ${isSidebarOpen ? 'w-8 -rotate-45 -translate-y-[4.5px]' : 'w-5'}`} />
+            </button>
+          </div>
+        </div>
 
         {/* Sidebar Panel */}
         <div className={`fixed inset-0 z-[900] transition-all duration-700 ${isSidebarOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
@@ -959,7 +971,7 @@ export default function Home() {
       <main className="max-w-[1400px] mx-auto px-6 md:px-16">
         
         {/* HERO: Balanced & Multi-layered */}
-        <section ref={heroSectionRef} className="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-16 lg:gap-20 pt-32 pb-20">
+        <section ref={heroSectionRef} className="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-16 lg:gap-20 pt-32 pb-20 overflow-hidden">
           <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
             <div className="hero-text-part">
               <span className="section-title">Aspiring Front-End Developer</span>
@@ -1025,7 +1037,7 @@ export default function Home() {
                 key={index}
                 onMouseEnter={() => setExpandedExpertise(index)}
                 onMouseLeave={() => setExpandedExpertise(null)}
-                className="group relative py-10 md:py-16 border-b border-[#8D6E63]/5 cursor-none"
+                className="group relative py-10 md:py-16 border-b border-[#8D6E63]/5 cursor-none overflow-hidden"
               >
                 {/* Parallax Moving Background Text */}
                 <div 
@@ -1160,7 +1172,7 @@ export default function Home() {
         </section>
 
         {/* WORK: Full-Bleed Cinematic Stage */}
-        <section id="work" ref={projectsSectionRef} className="py-24 md:py-48 border-t border-[#8D6E63]/10 bg-[#FDFBF9]">
+        <section id="work" ref={projectsSectionRef} className="py-24 md:py-48 border-t border-[#8D6E63]/10 bg-[#FDFBF9] overflow-hidden">
           <div className="max-w-[1400px] mx-auto px-6 md:px-16">
             <div className="mb-24 md:mb-48 flex flex-col items-center text-center">
               <span className="section-title reveal text-[#8D6E63]">Selected Works</span>
@@ -1261,7 +1273,7 @@ export default function Home() {
         </section>
 
         {/* CONTACT: Aesthetic Refinement */}
-        <section id="contact" className="py-12 md:py-48 relative z-10 reveal">
+        <section id="contact" className="py-12 md:py-48 relative z-10 reveal overflow-hidden">
           <div className="max-w-[1400px] mx-auto px-4 md:px-16">
             <div className="reveal soft-card bg-[#4E342E] text-white overflow-hidden p-6 md:p-24 shadow-[0_50px_100px_-30px_rgba(78,52,46,0.4)] relative rounded-[2.5rem] md:rounded-[5rem]">
               <div className="relative z-20 flex flex-col lg:flex-row justify-between items-center gap-10 lg:gap-16">
