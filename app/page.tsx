@@ -1054,7 +1054,7 @@ export default function Home() {
                 <div className="relative z-10 px-4 md:px-8 max-w-[1400px] mx-auto flex flex-col items-start">
                   <div className="flex items-baseline gap-6 md:gap-12 group-hover:translate-x-6 md:group-hover:translate-x-12 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]">
                     <span className="text-sm md:text-xl font-sans opacity-30 font-bold tracking-widest">0{index + 1}</span>
-                    <h3 className="text-5xl md:text-[10rem] font-black tracking-tighter uppercase italic font-serif leading-none transition-all duration-700 group-hover:text-[#8D6E63] group-hover:tracking-widest">
+                    <h3 className="text-[11vw] sm:text-5xl md:text-[10rem] font-black tracking-tighter uppercase italic font-serif leading-none transition-all duration-700 group-hover:text-[#8D6E63] group-hover:tracking-widest">
                       {skill.category}.
                     </h3>
                   </div>
