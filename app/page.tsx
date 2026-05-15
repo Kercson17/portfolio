@@ -886,13 +886,13 @@ export default function Home() {
       {/* Desktop Navigation (Hidden on Mobile) */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-1000 hidden md:block ${navScrolled ? "bg-white/80 backdrop-blur-xl py-6 border-b border-[#8D6E63]/5" : "bg-transparent py-10"}`}>
         <div className="max-w-[1400px] mx-auto px-8 md:px-16 flex justify-between items-center">
-          <div className="flex items-center gap-6">
-            <div className="logo-mark">K</div>
+          <a href="#" className="flex items-center gap-6 group/brand">
+            <div className="logo-mark group-hover/brand:bg-[#8D6E63] group-hover/brand:text-white transition-all duration-500">K</div>
             <div className="hidden sm:flex flex-col">
-              <span className="text-[11px] font-black tracking-[0.4em] uppercase leading-none mb-1">Kercson Didal</span>
+              <span className="text-[11px] font-black tracking-[0.4em] uppercase leading-none mb-1 group-hover/brand:text-[#8D6E63] transition-colors duration-500">Kercson Didal</span>
               <span className="text-[8px] font-bold text-[#8D6E63] tracking-[0.2em] uppercase leading-none opacity-60">Portfolio / 2026</span>
             </div>
-          </div>
+          </a>
           <div className="flex gap-8 md:gap-12">
             <a href="#about" className="nav-item">About</a>
             <a href="#education" className="nav-item">Education</a>
@@ -908,13 +908,13 @@ export default function Home() {
         {/* Mobile Header Bar */}
         <div className={`fixed top-0 w-full z-[1000] transition-all duration-1000 ${navScrolled ? "bg-white/80 backdrop-blur-xl py-4 border-b border-[#8D6E63]/5" : "bg-transparent py-7"}`}>
           <div className="px-6 flex justify-between items-center">
-            <div className="flex items-center gap-3">
+            <a href="#" className="flex items-center gap-3">
               <div className="w-8 h-8 flex items-center justify-center bg-[#4E342E] text-white font-black text-lg rounded-full shadow-lg">K</div>
               <div className="flex flex-col">
                 <span className="text-[10px] font-black tracking-[0.2em] uppercase leading-none mb-1">Kercson Didal</span>
                 <span className="text-[7px] font-bold text-[#8D6E63] tracking-[0.1em] uppercase leading-none opacity-60">Portfolio / 2026</span>
               </div>
-            </div>
+            </a>
             
             <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
