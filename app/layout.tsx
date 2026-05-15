@@ -19,7 +19,7 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "Kercson G. Didal | Portfolio",
-  description: 'Front-End Engineer specializing in high-fidelity interfaces.',
+  description: 'Information Technology Graduate specializing in full-stack web development and high-fidelity interfaces.',
   icons: {
     icon: [
       { url: '/icon.png', sizes: 'any', type: 'image/png' },

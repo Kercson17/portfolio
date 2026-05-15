@@ -10,18 +10,18 @@ gsap.registerPlugin(ScrollTrigger);
 // Data Constants
 const projects = [
   {
+    title: "VOTING SYSTEM",
+    description: "A secure, web-based online voting platform with authenticated user sessions, tamper-resistant vote submission, and real-time result tracking. Designed with data integrity and a clean, accessible user interface as core priorities.",
+    image: "/voting.png",
+    tags: ["React", "Next.js", "PostgreSQL", "Prisma"],
+    links: { live: "https://sscelection2025.vercel.app/admin-login", github: "#" }
+  },
+  {
     title: "FONUS FEDERATION",
     description: "A premium e-commerce platform for high-end mobile devices and accessories.",
     image: "/fonus.png",
     tags: ["Next.js", "Tailwind CSS", "GSAP"],
     links: { live: "https://fonuscebu.netlify.app/", github: "#" }
-  },
-  {
-    title: "VOTING SYSTEM",
-    description: "Secure and transparent digital voting platform with real-time results.",
-    image: "/voting.png",
-    tags: ["React", "Node.js", "MongoDB"],
-    links: { live: "https://sscelection2025.vercel.app/admin-login", github: "#" }
   },
   {
     title: "BRISASOLEI RESORT",
@@ -34,44 +34,39 @@ const projects = [
 
 const skills = [
   {
-    category: "Front-End",
-    description: "Crafting immersive user interfaces with modern frameworks and animation libraries.",
+    category: "Web Development",
     items: [
-      { name: "React / Next.js", icon: <i className="fab fa-react"></i> },
-      { name: "Angular", icon: <i className="fab fa-angular"></i> },
-      { name: "TypeScript", icon: <i className="fab fa-js"></i> },
-      { name: "Tailwind CSS", icon: <i className="fab fa-css3-alt"></i> },
-      { name: "GSAP / Framer", icon: <i className="fas fa-magic"></i> }
+      "Next.js 🚀",
+      "React ⚛️",
+      "Angular 🅰️",
+      "Tailwind CSS 🎨",
+      "TypeScript 💙",
+      "JavaScript 💛",
+      "GSAP ✨"
     ]
   },
   {
-    category: "Back-End",
-    description: "Engineering scalable server-side logic and secure authentication architectures.",
+    category: "Backend & Systems",
     items: [
-      { name: "Node.js / Express", icon: <i className="fab fa-node-js"></i> },
-      { name: "REST APIs", icon: <i className="fas fa-exchange-alt"></i> },
-      { name: "Prisma ORM", icon: <i className="fas fa-database"></i> },
-      { name: "Auth Design", icon: <i className="fas fa-shield-alt"></i> }
+      "Node.js 🟢",
+      "Express.js 🚂",
+      "AWS ☁️"
     ]
   },
   {
-    category: "Data Systems",
-    description: "Designing efficient database schemas and real-time synchronization logic.",
+    category: "Database",
     items: [
-      { name: "PostgreSQL", icon: <i className="fas fa-server"></i> },
-      { name: "MySQL", icon: <i className="fas fa-database"></i> },
-      { name: "Firebase", icon: <i className="fas fa-fire"></i> },
-      { name: "Schema Design", icon: <i className="fas fa-project-diagram"></i> }
+      "PostgreSQL 🐘",
+      "MySQL 🐬",
+      "Firebase 🔥"
     ]
   },
   {
-    category: "Engineering",
-    description: "Deploying high-performance applications with robust version control and CI/CD.",
+    category: "Foundations, Tools & OS",
     items: [
-      { name: "Git / Linux", icon: <i className="fab fa-github"></i> },
-      { name: "Vercel / Netlify", icon: <i className="fas fa-cloud-upload-alt"></i> },
-      { name: "Unit Testing", icon: <i className="fas fa-vial"></i> },
-      { name: "MacOS", icon: <i className="fab fa-apple"></i> }
+      "Git / GitHub 🐙",
+      "OOP / DSA 🧠",
+      "Windows / macOS / Linux 💻"
     ]
   }
 ];
@@ -81,19 +76,19 @@ const education = [
     school: "Benedicto College",
     period: "2022 — 2026",
     degree: "Bachelor of Science in Information Technology",
-    highlights: "Distinguished Academic Performance (Dean's List 2023)",
+    highlights: "Dean's Lister (1st Year, 1st Sem · A.Y. 2022–2023)",
     image: "/4.png",
   },
   {
-    school: "University of Cebu",
+    school: "University of Cebu – Lapu-Lapu Mandaue",
     period: "2020 — 2022",
-    degree: "General Academic Strand (Pre-Engineering)",
+    degree: "Senior High School — General Academic Strand",
     image: "/5.png",
   },
   {
     school: "Paknaan National High School",
     period: "2015 — 2020",
-    degree: "Junior High School Diploma",
+    degree: "High School Diploma",
     image: "/6.png",
   }
 ];
@@ -861,7 +856,7 @@ export default function Home() {
             <div className="mt-12 flex flex-col items-center text-center max-w-xl px-8">
               <div className="loader-bloom-sub opacity-0 translate-y-4">
                 <span className="text-[10px] font-black tracking-[0.8em] uppercase text-[#8D6E63] mb-8 block">
-                  Est. 2026 / Creative Developer
+                  Est. 2026 / IT Graduate & Developer
                 </span>
                 
                 <div className="space-y-6">
@@ -974,7 +969,7 @@ export default function Home() {
         <section ref={heroSectionRef} className="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-16 lg:gap-20 pt-32 pb-20 overflow-hidden">
           <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
             <div className="hero-text-part">
-              <span className="section-title">Aspiring Front-End Developer</span>
+              <span className="section-title">Information Technology Graduate</span>
               <h1 className="text-4xl sm:text-7xl md:text-8xl lg:text-[110px] font-black leading-[0.9] tracking-tighter uppercase italic mb-8 font-serif">
                 Turning <br />
                 <span className="text-[#8D6E63] font-medium not-italic font-sans">Ideas</span> <br />
@@ -982,19 +977,19 @@ export default function Home() {
               </h1>
             </div>
             <p className="hero-text-part text-lg md:text-2xl text-[#8D6E63] max-w-xl leading-relaxed mb-12 font-medium">
-              BSIT Student passionate about creating clean, user-friendly, and visually appealing websites. Eager to learn and work on projects that challenge me to build modern web experiences.
+              Information Technology graduate passionate about building responsive, production-ready web applications. Driven by a passion for technology and continuous growth.
             </p>
             <div className="hero-text-part flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
               <a href="#work" className="btn-primary w-full sm:w-auto text-center">Explore My Work</a>
-              <a href="/Didal_CV.pdf" download className="btn-outline w-full sm:w-auto text-center">Download CV</a>
+              <a href="/KercsonCv.pdf" target="_blank" rel="noopener noreferrer" className="btn-outline w-full sm:w-auto text-center">View CV</a>
             </div>
             
             <div className="hero-text-part mt-16 flex flex-wrap justify-center lg:justify-start items-center gap-6 text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] opacity-60">
-              <span className="flex items-center gap-2"><i className="fab fa-html5"></i> HTML/CSS</span>
-              <span className="hidden sm:block w-1 h-1 bg-[#8D6E63] rounded-full"></span>
               <span className="flex items-center gap-2"><i className="fab fa-js"></i> JavaScript</span>
               <span className="hidden sm:block w-1 h-1 bg-[#8D6E63] rounded-full"></span>
               <span className="flex items-center gap-2"><i className="fab fa-react"></i> React.js</span>
+              <span className="hidden sm:block w-1 h-1 bg-[#8D6E63] rounded-full"></span>
+              <span className="flex items-center gap-2"><i className="fas fa-database"></i> SQL / NoSQL</span>
             </div>
           </div>
 
@@ -1018,8 +1013,8 @@ export default function Home() {
             <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic mb-12 md:mb-16 leading-none font-serif reveal">The Philosophy.</h2>
             <div className="space-y-8 md:space-y-12 text-xl md:text-4xl text-[#4E342E] leading-[1.3] font-medium tracking-tight">
               <p className="reveal">Fusing <span className="text-[#8D6E63] italic font-serif">learning</span> with <span className="text-[#8D6E63]">creativity</span> to build interactive web experiences.</p>
-              <p className="reveal">I am a <span className="bg-[#F2EBE4] px-4 py-1 rounded-xl whitespace-nowrap">BSIT student</span> with a passion for web development and UI/UX design. I'm always eager to learn, improve my skills, and work on projects that challenge me to build modern and professional web applications.</p>
-              <p className="text-lg md:text-2xl text-[#8D6E63] font-medium opacity-60 reveal">Currently pursuing a Bachelor of Science in Information Technology at Benedicto College.</p>
+              <p className="reveal">I am an <span className="bg-[#F2EBE4] px-4 py-1 rounded-xl whitespace-nowrap">Information Technology graduate</span> with a solid foundation in full-stack web development and database management. Experienced in building and deploying responsive, production-ready web applications across the full development lifecycle.</p>
+              <p className="text-lg md:text-2xl text-[#8D6E63] font-medium opacity-60 reveal">Detail-oriented professional driven by a genuine passion for technology and continuous growth.</p>
             </div>
           </div>
         </section>
@@ -1052,10 +1047,10 @@ export default function Home() {
                 </div>
 
                 <div className="relative z-10 px-4 md:px-8 max-w-[1400px] mx-auto flex flex-col items-start">
-                  <div className="flex items-baseline gap-6 md:gap-12 group-hover:translate-x-6 md:group-hover:translate-x-12 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]">
-                    <span className="text-sm md:text-xl font-sans opacity-30 font-bold tracking-widest">0{index + 1}</span>
-                    <h3 className="text-[11vw] sm:text-5xl md:text-[10rem] font-black tracking-tighter uppercase italic font-serif leading-none transition-all duration-700 group-hover:text-[#8D6E63] group-hover:tracking-widest">
-                      {skill.category}.
+                  <div className="flex items-baseline gap-4 md:gap-12 group-hover:translate-x-6 md:group-hover:translate-x-12 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]">
+                    <span className="text-sm md:text-4xl font-sans opacity-30 font-bold tracking-widest">0{index + 1} —</span>
+                    <h3 className="text-[11vw] sm:text-5xl md:text-[8rem] font-black tracking-tighter uppercase italic font-serif leading-none transition-all duration-700 group-hover:text-[#8D6E63] group-hover:tracking-widest">
+                      {skill.category}
                     </h3>
                   </div>
 
@@ -1065,23 +1060,17 @@ export default function Home() {
                       expandedExpertise === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
                     }`}
                   >
-                    <div className="flex flex-col md:flex-row md:items-center gap-10 md:gap-24 ml-10 md:ml-32">
-                      <p className="text-xl md:text-3xl font-medium text-[#4E342E]/70 max-w-xl leading-tight italic font-serif">
-                        {skill.description}
-                      </p>
-                      
-                      <div className="flex flex-wrap gap-4 md:gap-6">
+                    <div className="flex flex-col md:flex-row md:items-start gap-10 md:gap-24 ml-10 md:ml-44">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-4">
                         {skill.items.map((item, iIndex) => (
                           <div 
                             key={iIndex}
-                            className="flex items-center gap-3 animate-ripple-in"
+                            className={`flex items-center gap-4 animate-ripple-in ${item === 'GSAP' ? 'mt-4 sm:mt-0 lg:col-start-1' : ''}`}
                             style={{ animationDelay: `${iIndex * 100}ms` }}
                           >
-                            <span className="text-[#8D6E63] text-2xl md:text-3xl">
-                              {item.icon}
-                            </span>
-                            <span className="text-sm md:text-base font-black uppercase tracking-[0.2em] text-[#4E342E]">
-                              {item.name}
+                            <span className="text-[#8D6E63] text-xl md:text-2xl font-bold">•</span>
+                            <span className="text-lg md:text-2xl font-bold uppercase tracking-wider text-[#4E342E]/80">
+                              {item}
                             </span>
                           </div>
                         ))}
@@ -1286,10 +1275,15 @@ export default function Home() {
 
                   <div className="space-y-8 md:space-y-16 mb-12 lg:mb-0">
                     <div className="group">
-                      <p className="text-[8px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-2 md:mb-4">Email Address</p>
-                      <a href="mailto:kercsondidal@gmail.com" className="text-lg md:text-4xl font-bold hover:text-[#8D6E63] transition-all duration-500 block underline underline-offset-[8px] md:underline-offset-[12px] decoration-white/10 group-hover:decoration-[#8D6E63]/40 break-all">
-                        kercsondidal@gmail.com
-                      </a>
+                      <p className="text-[8px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-2 md:mb-4">Direct Communication</p>
+                      <div className="space-y-2 md:space-y-4">
+                        <a href="mailto:kercsondidal@gmail.com" className="text-lg md:text-3xl font-bold hover:text-[#8D6E63] transition-all duration-500 block underline underline-offset-[8px] md:underline-offset-[12px] decoration-white/10 group-hover:decoration-[#8D6E63]/40 break-words">
+                          kercsondidal@gmail.com
+                        </a>
+                        <a href="tel:09219639200" className="text-lg md:text-3xl font-bold hover:text-[#8D6E63] transition-all duration-500 block opacity-60">
+                          +63 921 963 9200
+                        </a>
+                      </div>
                     </div>
 
                     <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-8 sm:gap-24">
@@ -1298,8 +1292,9 @@ export default function Home() {
                         <p className="text-xs md:text-base font-bold tracking-widest uppercase opacity-80">Mandaue City, Cebu, PH</p>
                       </div>
                       <div>
-                        <p className="text-[8px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-2 md:mb-4">Social</p>
+                        <p className="text-[8px] md:text-[10px] font-black tracking-[0.4em] uppercase text-[#8D6E63] mb-2 md:mb-4">Digital Presence</p>
                         <div className="flex justify-center lg:justify-start gap-6 md:gap-8 text-white/40 text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase">
+                          <a href="https://kdidal.netlify.app" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Main Site</a>
                           <a href="#" className="hover:text-white transition-colors">Github</a>
                           <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
                         </div>
